@@ -1,0 +1,29 @@
+﻿using Microsoft.Extensions.DependencyInjection;
+using Saturn.Core.DataAccess.Abstract;
+using Saturn.Core.DataAccess.Concrete;
+using Saturn.Core.Logic.Abstract;
+using Saturn.Core.Logic.Concrete;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Saturn.Core.Logic.DependencyInjection
+{
+    public static class ServiceProviderApp
+    {
+        public static IServiceCollection GetServiceProvider(this IServiceCollection services)
+        {
+            services.AddDbContext<SaturnDbContext>();
+            services.AddScoped<IStudentDataAccess, StudentDataAccess>();
+            services.AddScoped<IGroupDataAccess, GroupDataAccess>();
+            services.AddScoped<IAttendaceDataAccess, AttendanceDataAccess>();
+            services.AddScoped<IAttendanceRawDataAccess, AttendaceRawDataAccess>();
+            services.AddScoped<IAttendanceRawService, AttendanceRawManager>();
+            services.AddScoped<IStudentService, StudentManager>();
+            return services;
+
+        }
+    }
+}

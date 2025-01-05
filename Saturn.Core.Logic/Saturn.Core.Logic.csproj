@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Saturn.Core.DataAccess\Saturn.Core.DataAccess.csproj" />
+    <ProjectReference Include="..\Saturn.Core.Entity\Saturn.Core.Entity.csproj" />
+  </ItemGroup>
+
+</Project>
