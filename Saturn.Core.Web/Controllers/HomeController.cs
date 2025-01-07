@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Saturn.Core.Logic.Abstract;
 using Saturn.Core.Web.Models;
 using System.Diagnostics;
 
@@ -7,14 +8,16 @@ namespace Saturn.Core.Web.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private readonly IStudentService _studentService;
+        public HomeController(ILogger<HomeController> logger, IStudentService studentService)
         {
             _logger = logger;
+            _studentService = studentService;
         }
 
         public IActionResult Index()
         {
+            var data = _studentService.GetAll();
             return View();
         }
 

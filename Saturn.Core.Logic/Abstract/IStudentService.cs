@@ -13,5 +13,6 @@ namespace Saturn.Core.Logic.Abstract
         Task Update(Student student);
         Task Delete(Student student);
         Task<IEnumerable<Student>> GetAll(Func<bool,Student> predicte);
+        Task<IEnumerable<Student>> GetAll();
     }
 }

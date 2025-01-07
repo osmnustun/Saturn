@@ -34,6 +34,11 @@ namespace Saturn.Core.Logic.Concrete
             throw new NotImplementedException();
         }
 
+        public async Task<IEnumerable<Student>> GetAll()
+        {
+           return await _studentDataAccess.GetAllAsync();
+        }
+
         public Task Update(Student student)
         {
             throw new NotImplementedException();

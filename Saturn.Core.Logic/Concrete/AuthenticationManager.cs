@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Saturn.Core.Entity.DatabaseEntities;
+using Saturn.Core.Logic.Abstract;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -12,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Saturn.Core.Logic.Concrete
 {
-    public class AuthenticationManager:IAuthenticationService
+    public class AuthenticationManager : IAuthenticationService
     {
         private readonly IConfiguration _configuration;
         private readonly UserManager<User> _userManager;
@@ -21,9 +23,9 @@ namespace Saturn.Core.Logic.Concrete
             _configuration = configuration;
             _userManager = userManager;
         }
-        public async Task CreateUser (User user)
+        public async Task<IdentityResult> CreateUser(User user, string password)
         {
-            await _userManager.CreateAsync (user);
+            return await _userManager.CreateAsync(user,password);
         }
         public async Task<string> GenerateJwtToken(User user)
         {
@@ -48,5 +50,10 @@ namespace Saturn.Core.Logic.Concrete
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
+        public async Task<IEnumerable<User>> GetUsers()
+        {
+           var resault = await _userManager.Users.ToListAsync();
+           return resault.ToList();
+        }
     }
 }

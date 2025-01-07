@@ -40,6 +40,10 @@ namespace Saturn.Core.DataAccess.Concrete
           
         }
 
+        public async  Task<IEnumerable<TEntity>> GetAllAsync()
+        {
+           return await _context.Set<TEntity>().ToListAsync();
+        }
 
         public async Task SaveChangesAsync()
         {

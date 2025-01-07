@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
+using Saturn.Core.DataAccess.Abstract;
 using Saturn.Core.DataAccess.Concrete;
 using Saturn.Core.Entity.DatabaseEntities;
+using Saturn.Core.Logic.Abstract;
 using Saturn.Core.Logic.Concrete;
 using System.Text;
 
@@ -12,6 +14,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<SaturnDbContext>();
 builder.Services.AddScoped<IAuthenticationService, AuthenticationManager>();
+builder.Services.AddScoped<IStudentService, StudentManager>();
+builder.Services.AddScoped<IStudentDataAccess, StudentDataAccess>();
 // JWT ile kimlik doðrulama yapýlandýrmasý
 var jwtSetting = builder.Configuration.GetSection("jwt");
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

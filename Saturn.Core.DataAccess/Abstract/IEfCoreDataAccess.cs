@@ -12,6 +12,7 @@ namespace Saturn.Core.DataAccess.Abstract
         Task<TEntity> UpdateAsync(TEntity entity);
         Task<TEntity> DeleteAsync(TEntity entity);
         Task<IEnumerable<TEntity>> GetAllAsync(Func<TEntity,bool> predicate);
+        Task<IEnumerable<TEntity>> GetAllAsync();
         Task SaveChangesAsync();
     }
 }
