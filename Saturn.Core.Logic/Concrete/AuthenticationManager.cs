@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Saturn.Core.Entity.DatabaseEntities;
+using Saturn.Core.Entity.DTO;
 using Saturn.Core.Logic.Abstract;
 using System;
 using System.Collections.Generic;
@@ -18,21 +19,38 @@ namespace Saturn.Core.Logic.Concrete
     {
         private readonly IConfiguration _configuration;
         private readonly UserManager<User> _userManager;
-        public AuthenticationManager(IConfiguration configuration, UserManager<User> userManager)
+        private readonly RoleManager<UserRole> _roleManager;
+        public AuthenticationManager(IConfiguration configuration, UserManager<User> userManager, RoleManager<UserRole> roleManager)
         {
             _configuration = configuration;
             _userManager = userManager;
+            _roleManager = roleManager;
         }
+
+        public async Task<IdentityResult> AddRole(UserRole rolname)
+        {        
+          return await _roleManager.CreateAsync(rolname);
+        }
+
         public async Task<IdentityResult> CreateUser(User user, string password)
         {
-            return await _userManager.CreateAsync(user,password);
+             await _userManager.CreateAsync(user,password);
+            
+            return await _userManager.AddToRoleAsync(user, "Admin");
         }
-        public async Task<string> GenerateJwtToken(User user)
+        public async Task<string> GenerateJwtToken(UserDTO userDTO)
         {
+            User user = await _userManager.FindByNameAsync(userDTO.UserName);
+            
+            var cp = _userManager.CheckPasswordAsync(user, userDTO.Password);
+            if (!cp.Result)
+                return "Username or Password Error";
             var claims = new List<Claim>
         {
             new Claim(ClaimTypes.Name, user.UserName),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+             
+          
         };
             var roles = await _userManager.GetRolesAsync(user);
             foreach (var role in roles)

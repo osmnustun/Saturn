@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Saturn.Core.Entity.DatabaseEntities;
+using Saturn.Core.Entity.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,5 +13,7 @@ namespace Saturn.Core.Logic.Abstract
     {
         Task<IdentityResult> CreateUser(User user, string password);
         Task<IEnumerable<User>> GetUsers();
+        Task<IdentityResult> AddRole(UserRole rolname);
+        Task<string> GenerateJwtToken(UserDTO userDTO);
     }
 }

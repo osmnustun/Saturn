@@ -11,8 +11,8 @@ using Saturn.Core.DataAccess.Concrete;
 namespace Saturn.Core.DataAccess.Migrations
 {
     [DbContext(typeof(SaturnDbContext))]
-    [Migration("20250107080731_Init")]
-    partial class Init
+    [Migration("20250108070819_M1")]
+    partial class M1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -233,24 +233,6 @@ namespace Saturn.Core.DataAccess.Migrations
                     b.ToTable("Students");
                 });
 
-            modelBuilder.Entity("Saturn.Core.Entity.DatabaseEntities.Teacher", b =>
-                {
-                    b.Property<int>("TeacherId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("Branch")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("FullName")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.HasKey("TeacherId");
-
-                    b.ToTable("Teachers");
-                });
-
             modelBuilder.Entity("Saturn.Core.Entity.DatabaseEntities.User", b =>
                 {
                     b.Property<string>("Id")
@@ -269,6 +251,10 @@ namespace Saturn.Core.DataAccess.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("tinyint(1)");
@@ -323,6 +309,12 @@ namespace Saturn.Core.DataAccess.Migrations
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("longtext");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Name")
                         .HasMaxLength(256)
