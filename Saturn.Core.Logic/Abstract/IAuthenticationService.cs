@@ -15,5 +15,6 @@ namespace Saturn.Core.Logic.Abstract
         Task<IEnumerable<User>> GetUsers();
         Task<IdentityResult> AddRole(UserRole rolname);
         Task<string> GenerateJwtToken(UserDTO userDTO);
+        string ValidateToken(string token);
     }
 }

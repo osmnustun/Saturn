@@ -65,6 +65,12 @@ namespace Saturn.Core.Web.API
            return await _authenticateService.GenerateJwtToken(userDTO);
         }
 
+        [HttpPost("validatetoken")]
+        public string ValidateToken(string token)
+        {
+            return   _authenticateService.ValidateToken(token);
+        }
+
     }
 
 

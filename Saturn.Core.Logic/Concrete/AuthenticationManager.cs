@@ -67,7 +67,43 @@ namespace Saturn.Core.Logic.Concrete
                         signingCredentials: creds);
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+        public string ValidateToken(string token)
+        {
+            string secretKey = _configuration["Jwt:SecretKey"];
 
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.UTF8.GetBytes(secretKey);
+
+            try
+            {
+                // Token doğrulama işlemi
+                var validationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidIssuer = _configuration["Jwt:Issuer"],
+                    ValidAudience = _configuration["Jwt:Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(key)
+                };
+
+                // Token'ı doğrula
+                var principal = tokenHandler.ValidateToken(token, validationParameters, out SecurityToken validatedToken);
+               return ("Token geçerli. Veriler: " + principal.Identity.Name);
+            }
+            catch (SecurityTokenExpiredException)
+            {
+                return ("Token süresi dolmuş.");
+            }
+            catch (SecurityTokenInvalidSignatureException)
+            {
+                return ("Geçersiz token imzası.");
+            }
+            catch (Exception ex)
+            {
+                return ("Geçersiz token: " + ex.Message);
+            }
+        }
         public async Task<IEnumerable<User>> GetUsers()
         {
            var resault = await _userManager.Users.ToListAsync();
