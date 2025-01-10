@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace Saturn.Core.Entity.Enums
 {
-    public enum PersonelType
+    public enum  UserType
     {
-        None = 0,
-        Teacher = 1,
-        Manager = 2
+       Admin,
+       Teacher,
+       Manager
     }
 }

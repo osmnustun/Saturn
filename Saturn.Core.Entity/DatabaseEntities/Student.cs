@@ -9,17 +9,17 @@ namespace Saturn.Core.Entity.DatabaseEntities
 {
     public class Student
     {
-        private ICollection<Group> _groups;
+        private ICollection<Lesson> _groups;
         [Key]
         public int StudentId { get; set; }
         public string? Username { get; set; }
         public string? FullName { get; set; }
         public string? Class { get; set; }
-        public ICollection<Group>? Groups
+        public ICollection<Lesson>? Groups
         {
             get
             {
-                return _groups ??= new List<Group>();
+                return _groups ??= new List<Lesson>();
             }
             set
             {

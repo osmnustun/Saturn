@@ -109,5 +109,15 @@ namespace Saturn.Core.Logic.Concrete
            var resault = await _userManager.Users.ToListAsync();
            return resault.ToList();
         }
+
+        public async Task<string> CheckUser(UserDTO userDTO)
+        {
+           var user = await _userManager.FindByNameAsync(userDTO.UserName);
+            if (user != null)
+                if (await _userManager.CheckPasswordAsync(user, userDTO.Password))
+                    return await GenerateJwtToken(userDTO);
+            return "Doğrulama Yapılamadı, Kullanıcı yok!";
+
+        }
     }
 }

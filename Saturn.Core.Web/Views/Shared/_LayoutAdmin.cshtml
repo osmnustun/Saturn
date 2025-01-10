@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Saturn.Core.Web</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Saturn.Core.Web.styles.css" asp-append-version="true" /> 
+     <style>
+         .btn:hover
+         {
+             background-color:teal;
+             opacity:80%;
+         }
+     </style>
+</head>
+<body>
+    <div class="d-flex">
+        <!-- Sidebar -->
+        <nav class="bg-light border-end vh-100 p-3" style="width: 250px;">
+            <h4 class="text-center">Menü</h4>
+            <a asp-controller="User" asp-action="Index" class="btn text-start text-dark text-decoration-none d-block py-2">Kullanıcı İşlemleri</a>
+            <a asp-controller="Role" asp-action="Index" class="btn text-start text-dark text-decoration-none d-block py-2">Rol İşlemleri</a>
+            <a asp-controller="Report" asp-action="Index" class="btn text-start text-dark text-decoration-none d-block py-2">Raporlama İşlemleri</a>
+            <a asp-controller="Attendance" asp-action="Index" class="btn text-start text-dark text-decoration-none d-block py-2">Yoklama İşlemleri</a>
+            <a asp-controller="LessonPLan" asp-action="Index" class="btn text-start text-dark text-decoration-none d-block py-2">Ders Programı İşlemleri</a>
+            <a asp-controller="Student" asp-action="Index" class="btn text-start text-dark text-decoration-none d-block py-2">Öğrenci İşlemleri</a>
+            <div class="btn btn-danger col-12 mt-3">Çıkış yap</div>
+        </nav>
+
+        <!-- Content Area -->
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+   
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2024 - Saturn Web Project - <a asp-area="" asp-controller="Home" asp-action="Privacy">Gizlilik Politikası</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

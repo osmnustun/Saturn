@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Saturn.Core.DataAccess.Abstract
 {
-    public interface IGroupDataAccess:IEfCoreDataAccess<Group>
+    public interface IGroupDataAccess:IEfCoreDataAccess<Lesson>
     {
     }
 }

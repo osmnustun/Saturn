@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Saturn.Core.DataAccess.Concrete
 {
-    public class GroupDataAccess : EfCoreRepository<Group, SaturnDbContext>, IGroupDataAccess
+    public class GroupDataAccess : EfCoreRepository<Lesson, SaturnDbContext>, IGroupDataAccess
     {
         public GroupDataAccess(SaturnDbContext context) : base(context)
         {

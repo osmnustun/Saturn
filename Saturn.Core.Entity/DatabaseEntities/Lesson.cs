@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace Saturn.Core.Entity.DatabaseEntities
 {
-    public class Group
+    public class Lesson
     {
         private ICollection<Student>? _students;
         [Key]
-        public int GroupId { get; set; }
-        public string? GroupName { get; set; }
-        public DayOfWeek DayOfGroup { get; set; }
+        public int LessonId { get; set; }
+        public string? LessonName { get; set; }
+        public DayOfWeek DayOfLesson { get; set; }
         public TimeOnly StartTime { get; set; }
         public TimeOnly EndTime { get; set; }
         public ICollection<Student> Students
@@ -29,6 +29,8 @@ namespace Saturn.Core.Entity.DatabaseEntities
             }
         }       
         public int StudentId { get; set; }
+        public User Teacher { get; set; }
+        public Guid UserId { get; set; }
 
     }
 }

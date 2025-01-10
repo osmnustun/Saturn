@@ -179,7 +179,7 @@ namespace Saturn.Core.DataAccess.Migrations
                     b.ToTable("AttendanceRaws");
                 });
 
-            modelBuilder.Entity("Saturn.Core.Entity.DatabaseEntities.Group", b =>
+            modelBuilder.Entity("Saturn.Core.Entity.DatabaseEntities.Lesson", b =>
                 {
                     b.Property<int>("GroupId")
                         .ValueGeneratedOnAdd()
@@ -335,7 +335,7 @@ namespace Saturn.Core.DataAccess.Migrations
 
             modelBuilder.Entity("GroupStudent", b =>
                 {
-                    b.HasOne("Saturn.Core.Entity.DatabaseEntities.Group", null)
+                    b.HasOne("Saturn.Core.Entity.DatabaseEntities.Lesson", null)
                         .WithMany()
                         .HasForeignKey("GroupsGroupId")
                         .OnDelete(DeleteBehavior.Cascade)
