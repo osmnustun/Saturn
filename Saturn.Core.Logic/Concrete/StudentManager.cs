@@ -45,7 +45,7 @@ namespace Saturn.Core.Logic.Concrete
 
         public async Task RemoteAdd(Student student)
         {
-            await _apiService.PostAsync<Student,string>("https://localhost:7059/api/student/add", student);
+            await _apiService.PostAsync<Student,string>(DomainData.Domain+"student/add", student);
         }
 
         public Task RemoteDelete(Student student)
@@ -60,7 +60,7 @@ namespace Saturn.Core.Logic.Concrete
 
         public async Task<IEnumerable<Student>> RemoteGetAll()
         {
-            return await _apiService.GetAsync<List<Student>>("https://localhost:7059/api/student/getall", null);
+            return await _apiService.GetAsync<List<Student>>(DomainData.Domain + "student/getall", null);
         }
 
         public Task RemoteUpdate(Student student)

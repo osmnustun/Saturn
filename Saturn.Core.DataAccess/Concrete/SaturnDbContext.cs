@@ -15,7 +15,16 @@ namespace Saturn.Core.DataAccess.Concrete
        
         public SaturnDbContext(DbContextOptions<SaturnDbContext> options) : base(options)
         {
-            Database.Migrate();
+            try
+            {
+                Database.Migrate();
+            }
+            catch (Exception)
+            {
+
+                
+            }
+          
         }
         //static readonly string connectionString = "Server = localhost;user ID= silivribilsem_com_saturn; Password =X2kkPrV10kwqfs#e7;Database=silivribilsem_com_saturndb;";// For product
 
