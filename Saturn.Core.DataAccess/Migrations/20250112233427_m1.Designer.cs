@@ -11,8 +11,8 @@ using Saturn.Core.DataAccess.Concrete;
 namespace Saturn.Core.DataAccess.Migrations
 {
     [DbContext(typeof(SaturnDbContext))]
-    [Migration("20250108070819_M1")]
-    partial class M1
+    [Migration("20250112233427_m1")]
+    partial class m1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -22,19 +22,19 @@ namespace Saturn.Core.DataAccess.Migrations
                 .HasAnnotation("ProductVersion", "8.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            modelBuilder.Entity("GroupStudent", b =>
+            modelBuilder.Entity("LessonStudent", b =>
                 {
-                    b.Property<int>("GroupsGroupId")
+                    b.Property<int>("GroupsLessonId")
                         .HasColumnType("int");
 
                     b.Property<int>("StudentsStudentId")
                         .HasColumnType("int");
 
-                    b.HasKey("GroupsGroupId", "StudentsStudentId");
+                    b.HasKey("GroupsLessonId", "StudentsStudentId");
 
                     b.HasIndex("StudentsStudentId");
 
-                    b.ToTable("GroupStudent");
+                    b.ToTable("LessonStudent");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -181,17 +181,17 @@ namespace Saturn.Core.DataAccess.Migrations
 
             modelBuilder.Entity("Saturn.Core.Entity.DatabaseEntities.Lesson", b =>
                 {
-                    b.Property<int>("GroupId")
+                    b.Property<int>("LessonId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("DayOfGroup")
+                    b.Property<int>("DayOfLesson")
                         .HasColumnType("int");
 
                     b.Property<TimeOnly>("EndTime")
                         .HasColumnType("time");
 
-                    b.Property<string>("GroupName")
+                    b.Property<string>("LessonName")
                         .HasColumnType("longtext");
 
                     b.Property<TimeOnly>("StartTime")
@@ -200,7 +200,15 @@ namespace Saturn.Core.DataAccess.Migrations
                     b.Property<int>("StudentId")
                         .HasColumnType("int");
 
-                    b.HasKey("GroupId");
+                    b.Property<string>("TeacherId")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("LessonId");
+
+                    b.HasIndex("TeacherId");
 
                     b.ToTable("Groups");
                 });
@@ -333,11 +341,11 @@ namespace Saturn.Core.DataAccess.Migrations
                     b.ToTable("AspNetRoles", (string)null);
                 });
 
-            modelBuilder.Entity("GroupStudent", b =>
+            modelBuilder.Entity("LessonStudent", b =>
                 {
                     b.HasOne("Saturn.Core.Entity.DatabaseEntities.Lesson", null)
                         .WithMany()
-                        .HasForeignKey("GroupsGroupId")
+                        .HasForeignKey("GroupsLessonId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -397,6 +405,15 @@ namespace Saturn.Core.DataAccess.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Saturn.Core.Entity.DatabaseEntities.Lesson", b =>
+                {
+                    b.HasOne("Saturn.Core.Entity.DatabaseEntities.User", "Teacher")
+                        .WithMany()
+                        .HasForeignKey("TeacherId");
+
+                    b.Navigation("Teacher");
                 });
 
             modelBuilder.Entity("Saturn.Core.Entity.DatabaseEntities.Student", b =>

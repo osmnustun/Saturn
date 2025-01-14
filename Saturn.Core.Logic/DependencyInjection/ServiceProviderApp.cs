@@ -3,6 +3,7 @@ using Saturn.Core.DataAccess.Abstract;
 using Saturn.Core.DataAccess.Concrete;
 using Saturn.Core.Logic.Abstract;
 using Saturn.Core.Logic.Concrete;
+using Saturn.Core.Logic.RemoteApi;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,7 @@ namespace Saturn.Core.Logic.DependencyInjection
             services.AddScoped<IAttendanceRawDataAccess, AttendaceRawDataAccess>();
             services.AddScoped<IAttendanceRawService, AttendanceRawManager>();
             services.AddScoped<IStudentService, StudentManager>();
+            services.AddScoped<ApiService>();
             return services;
 
         }

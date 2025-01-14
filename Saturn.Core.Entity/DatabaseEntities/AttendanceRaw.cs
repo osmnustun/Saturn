@@ -9,6 +9,7 @@ namespace Saturn.Core.Entity.DatabaseEntities
 {
     public class AttendanceRaw
     {
+        
         [Key]
         public int Id { get; set; }
         public string? Username { get; set; }

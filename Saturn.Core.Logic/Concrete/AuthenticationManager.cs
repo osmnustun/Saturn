@@ -5,13 +5,10 @@ using Microsoft.IdentityModel.Tokens;
 using Saturn.Core.Entity.DatabaseEntities;
 using Saturn.Core.Entity.DTO;
 using Saturn.Core.Logic.Abstract;
-using System;
-using System.Collections.Generic;
+using Saturn.Core.Logic.Attributes;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Saturn.Core.Logic.Concrete
 {
@@ -28,20 +25,20 @@ namespace Saturn.Core.Logic.Concrete
         }
 
         public async Task<IdentityResult> AddRole(UserRole rolname)
-        {        
-          return await _roleManager.CreateAsync(rolname);
+        {
+            return await _roleManager.CreateAsync(rolname);
         }
 
         public async Task<IdentityResult> CreateUser(User user, string password)
         {
-             await _userManager.CreateAsync(user,password);
-            
-            return await _userManager.AddToRoleAsync(user, "Admin");
+            return await _userManager.CreateAsync(user, password);
+
+            // await _userManager.AddToRoleAsync(user, "Admin");
         }
         public async Task<string> GenerateJwtToken(UserDTO userDTO)
         {
             User user = await _userManager.FindByNameAsync(userDTO.UserName);
-            
+
             var cp = _userManager.CheckPasswordAsync(user, userDTO.Password);
             if (!cp.Result)
                 return "Username or Password Error";
@@ -49,27 +46,31 @@ namespace Saturn.Core.Logic.Concrete
         {
             new Claim(ClaimTypes.Name, user.UserName),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-             
-          
+
+
         };
             var roles = await _userManager.GetRolesAsync(user);
+            roles.Add("admin");
+            roles.Add("user");
             foreach (var role in roles)
             {
                 claims.Add(new Claim(ClaimTypes.Role, role));
             }
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:SecretKey"]));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(AuthenticateData.SecretKey));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             var token = new JwtSecurityToken(
-                        _configuration["Jwt:Issuer"],
-                        _configuration["Jwt:Audience"],
-                        claims,
+
+                        issuer: AuthenticateData.Issuer,
+                        audience: AuthenticateData.Audience,
+                        claims: claims,
                         expires: DateTime.Now.AddHours(1),
-                        signingCredentials: creds);
+                        signingCredentials: creds
+             );
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
         public string ValidateToken(string token)
         {
-            string secretKey = _configuration["Jwt:SecretKey"];
+            string secretKey = AuthenticateData.SecretKey;
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.UTF8.GetBytes(secretKey);
@@ -82,14 +83,14 @@ namespace Saturn.Core.Logic.Concrete
                     ValidateIssuer = true,
                     ValidateAudience = true,
                     ValidateLifetime = true,
-                    ValidIssuer = _configuration["Jwt:Issuer"],
-                    ValidAudience = _configuration["Jwt:Audience"],
+                    ValidIssuer = AuthenticateData.Issuer,
+                    ValidAudience = AuthenticateData.Audience,
                     IssuerSigningKey = new SymmetricSecurityKey(key)
                 };
 
                 // Token'ı doğrula
                 var principal = tokenHandler.ValidateToken(token, validationParameters, out SecurityToken validatedToken);
-               return ("Token geçerli. Veriler: " + principal.Identity.Name);
+                return ("Token geçerli. Veriler: " + principal.Identity.Name);
             }
             catch (SecurityTokenExpiredException)
             {
@@ -104,20 +105,26 @@ namespace Saturn.Core.Logic.Concrete
                 return ("Geçersiz token: " + ex.Message);
             }
         }
+
+       
         public async Task<IEnumerable<User>> GetUsers()
         {
-           var resault = await _userManager.Users.ToListAsync();
-           return resault.ToList();
+            var resault = await _userManager.Users.ToListAsync();
+            return resault.ToList();
         }
 
         public async Task<string> CheckUser(UserDTO userDTO)
         {
-           var user = await _userManager.FindByNameAsync(userDTO.UserName);
+            var user = await _userManager.FindByNameAsync(userDTO.UserName);
             if (user != null)
                 if (await _userManager.CheckPasswordAsync(user, userDTO.Password))
                     return await GenerateJwtToken(userDTO);
             return "Doğrulama Yapılamadı, Kullanıcı yok!";
 
         }
+
+       
+
+      
     }
 }

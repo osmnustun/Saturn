@@ -7,7 +7,7 @@ using MySql.EntityFrameworkCore.Metadata;
 namespace Saturn.Core.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class M1 : Migration
+    public partial class m1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -88,24 +88,6 @@ namespace Saturn.Core.DataAccess.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Attendances", x => x.Id);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "Groups",
-                columns: table => new
-                {
-                    GroupId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    GroupName = table.Column<string>(type: "longtext", nullable: true),
-                    DayOfGroup = table.Column<int>(type: "int", nullable: false),
-                    StartTime = table.Column<TimeOnly>(type: "time", nullable: false),
-                    EndTime = table.Column<TimeOnly>(type: "time", nullable: false),
-                    StudentId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Groups", x => x.GroupId);
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
@@ -221,6 +203,31 @@ namespace Saturn.Core.DataAccess.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "Groups",
+                columns: table => new
+                {
+                    LessonId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    LessonName = table.Column<string>(type: "longtext", nullable: true),
+                    DayOfLesson = table.Column<int>(type: "int", nullable: false),
+                    StartTime = table.Column<TimeOnly>(type: "time", nullable: false),
+                    EndTime = table.Column<TimeOnly>(type: "time", nullable: false),
+                    StudentId = table.Column<int>(type: "int", nullable: false),
+                    TeacherId = table.Column<string>(type: "varchar(255)", nullable: true),
+                    UserId = table.Column<Guid>(type: "char(36)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Groups", x => x.LessonId);
+                    table.ForeignKey(
+                        name: "FK_Groups_AspNetUsers_TeacherId",
+                        column: x => x.TeacherId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "Students",
                 columns: table => new
                 {
@@ -244,23 +251,23 @@ namespace Saturn.Core.DataAccess.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "GroupStudent",
+                name: "LessonStudent",
                 columns: table => new
                 {
-                    GroupsGroupId = table.Column<int>(type: "int", nullable: false),
+                    GroupsLessonId = table.Column<int>(type: "int", nullable: false),
                     StudentsStudentId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_GroupStudent", x => new { x.GroupsGroupId, x.StudentsStudentId });
+                    table.PrimaryKey("PK_LessonStudent", x => new { x.GroupsLessonId, x.StudentsStudentId });
                     table.ForeignKey(
-                        name: "FK_GroupStudent_Groups_GroupsGroupId",
-                        column: x => x.GroupsGroupId,
+                        name: "FK_LessonStudent_Groups_GroupsLessonId",
+                        column: x => x.GroupsLessonId,
                         principalTable: "Groups",
-                        principalColumn: "GroupId",
+                        principalColumn: "LessonId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_GroupStudent_Students_StudentsStudentId",
+                        name: "FK_LessonStudent_Students_StudentsStudentId",
                         column: x => x.StudentsStudentId,
                         principalTable: "Students",
                         principalColumn: "StudentId",
@@ -306,8 +313,13 @@ namespace Saturn.Core.DataAccess.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_GroupStudent_StudentsStudentId",
-                table: "GroupStudent",
+                name: "IX_Groups_TeacherId",
+                table: "Groups",
+                column: "TeacherId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LessonStudent_StudentsStudentId",
+                table: "LessonStudent",
                 column: "StudentsStudentId");
 
             migrationBuilder.CreateIndex(
@@ -338,19 +350,19 @@ namespace Saturn.Core.DataAccess.Migrations
                 name: "AttendanceRaws");
 
             migrationBuilder.DropTable(
-                name: "GroupStudent");
+                name: "LessonStudent");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
-
-            migrationBuilder.DropTable(
-                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "Groups");
 
             migrationBuilder.DropTable(
                 name: "Students");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "Attendances");

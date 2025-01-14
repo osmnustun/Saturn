@@ -12,7 +12,14 @@ namespace Saturn.Core.Logic.Abstract
         Task Add(Student student);
         Task Update(Student student);
         Task Delete(Student student);
-        Task<IEnumerable<Student>> GetAll(Func<bool,Student> predicte);
+        Task<IEnumerable<Student>> GetAll(Func<Student,bool> predicte);
         Task<IEnumerable<Student>> GetAll();
+
+        Task RemoteAdd(Student student);
+        Task RemoteUpdate(Student student);
+        Task RemoteDelete(Student student);
+        Task<IEnumerable<Student>> RemoteGetAll(Func<Student, bool> predicte);
+        Task<IEnumerable<Student>> RemoteGetAll();
+
     }
 }

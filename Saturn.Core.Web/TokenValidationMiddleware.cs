@@ -15,7 +15,7 @@ namespace Saturn.Core.Web
 
         public async Task InvokeAsync(HttpContext context)
         {
-            var token = context.Request.Cookies["jwt"];
+            var token = context.Request.Cookies["JwtToken"];
             if (!string.IsNullOrEmpty(token))
             {
                 var handler = new JwtSecurityTokenHandler();
@@ -28,12 +28,13 @@ namespace Saturn.Core.Web
                         ValidateIssuer = true,
                         ValidateAudience = true,
                         ValidateLifetime = true,
-                        ValidIssuer = "your-issuer",
-                        ValidAudience = "your-audience",
+                        ValidIssuer = "silivribilsem.com",
+                        ValidAudience = "silivribilsem.com",
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("EO1rZOR-a05q3Q7wKBXA_UmdMHYSGw13_mJUXhUJiS4="))
                     };
                     var principal = handler.ValidateToken(token, validationParameters, out var validatedToken);
                     // principal'e erişebilirsiniz
+                    context.User = principal;
                 }
             }
             await _next(context);

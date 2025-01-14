@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Saturn.Core.Entity.DatabaseEntities;
 using Saturn.Core.Entity.DTO;
 using Saturn.Core.Logic.Abstract;
+using Saturn.Core.Logic.Attributes;
 
 namespace Saturn.Core.Web.API
 {
@@ -53,7 +53,9 @@ namespace Saturn.Core.Web.API
             return await _authenticateService.AddRole(userRole);
         }
 
+       
         [HttpGet("users")]
+        [AuthorizeApi]
         public async Task<List<User>> GetUsers()
         {
             return (List<User>)await _authenticateService.GetUsers();

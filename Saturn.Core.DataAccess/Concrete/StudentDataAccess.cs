@@ -13,5 +13,7 @@ namespace Saturn.Core.DataAccess.Concrete
         public StudentDataAccess(SaturnDbContext context) : base(context)
         {
         }
+
+      
     }
 }

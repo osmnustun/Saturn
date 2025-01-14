@@ -1,11 +1,13 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿
 using Microsoft.AspNetCore.Mvc;
 using Saturn.Core.Entity.DatabaseEntities;
 using Saturn.Core.Entity.DTO;
 using Saturn.Core.Logic.Abstract;
+using Saturn.Core.Logic.Attributes;
 
 namespace Saturn.Core.Web.Controllers.Admin
 {
+ 
     public class AdminController : Controller
     {
         private readonly IAuthenticationService _authenticationService;
@@ -15,9 +17,8 @@ namespace Saturn.Core.Web.Controllers.Admin
             _authenticationService = authenticationService;
         }
 
-        [Authorize]
-        public IActionResult Index()
-        
+        [AuthorizeClient]
+        public IActionResult Index()        
         {
             return View("Dashboard");
         }
@@ -25,19 +26,21 @@ namespace Saturn.Core.Web.Controllers.Admin
         [HttpPost]
         public async  Task<IActionResult> CheckUser(UserDTO userDTO)
         {
+            Console.WriteLine("Methot Çalıştı");
             var token = await _authenticationService.CheckUser(userDTO);
-            Response.Cookies.Append("jwt", token, new CookieOptions
+            var cookieOptions = new CookieOptions
             {
-                HttpOnly = true, // Çerez sadece backend'de kullanılabilir
-                Secure = true,   // HTTPS bağlantısı gerektirir
-                Expires = DateTime.UtcNow.AddMinutes(2)
-
-            });
-            return RedirectToAction("Index");
+                HttpOnly = true, // JavaScript erişimini engeller
+                Secure = true,   // HTTPS üzerinde gönderilir
+                SameSite = SameSiteMode.Strict, // CSRF koruması
+                Expires = DateTime.UtcNow.AddDays(7) // Süresi dolma
+            };
+            Response.Cookies.Append(AuthenticateData.CookiHeaderText, token, cookieOptions);
+            return RedirectToAction("Index", "LessonPlan");
 
            
         }
 
-
+        
     }
 }

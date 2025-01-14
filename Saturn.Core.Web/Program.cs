@@ -1,51 +1,35 @@
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+
+
 using Microsoft.AspNetCore.Identity;
-using Microsoft.IdentityModel.Tokens;
+using Microsoft.EntityFrameworkCore;
 using Saturn.Core.DataAccess.Abstract;
 using Saturn.Core.DataAccess.Concrete;
 using Saturn.Core.Entity.DatabaseEntities;
 using Saturn.Core.Logic.Abstract;
+using Saturn.Core.Logic.Attributes;
 using Saturn.Core.Logic.Concrete;
-using Saturn.Core.Web;
+using Saturn.Core.Logic.RemoteApi;
+using System.Configuration;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddDbContext<SaturnDbContext>();
+var connectionString = builder.Configuration.GetConnectionString("SaturnDb");
+builder.Services.AddDbContext<SaturnDbContext>(opt =>
+{
+    opt.UseMySQL(connectionString);
+});
 builder.Services.AddScoped<IAuthenticationService, AuthenticationManager>();
 builder.Services.AddScoped<IStudentService, StudentManager>();
 builder.Services.AddScoped<IStudentDataAccess, StudentDataAccess>();
-// JWT ile kimlik doðrulama yapýlandýrmasý
-var jwtSetting = builder.Configuration.GetSection("jwt");
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme; 
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(options =>
-    {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-
-            ValidateIssuer = false,
-            ValidateAudience = false,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
-            ValidIssuer = jwtSetting["Jwt:Issuer"],
-            ValidAudience = jwtSetting["Jwt:Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSetting["Jwt:SecretKey"]))
-        };
-
-    });
+builder.Services.AddScoped<IAttendanceRawService,AttendanceRawManager>();
+builder.Services.AddScoped<IAttendaceDataAccess,AttendanceDataAccess>();
+builder.Services.AddScoped<IAttendanceRawDataAccess, AttendaceRawDataAccess>();
+builder.Services.AddScoped<ApiService>();
 
 
-
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy("Bearer", policy => policy.RequireAuthenticatedUser());
-});
 builder.Services.AddIdentity<User, UserRole>(
     options =>
     {        // Parola yapýlandýrmasýný buraya ekleyebilirsiniz
@@ -58,7 +42,7 @@ builder.Services.AddIdentity<User, UserRole>(
     })
     .AddEntityFrameworkStores<SaturnDbContext>()
     .AddDefaultTokenProviders();
-
+builder.Services.AddControllers();
 
 
 var app = builder.Build();
@@ -76,10 +60,14 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseAuthentication();  // Kimlik doðrulama middleware'ini ekle
-app.UseAuthorization();   // Yetkilendirme middleware'ini ekle
-app.UseMiddleware<TokenValidationMiddleware>();
-
+app.UseAuthentication();
+app.UseAuthorization();
+//app.UseMiddleware<TokenValidationMiddleware>();
+app.Use(async (context, next) =>
+{
+    Console.WriteLine("Request path: " + context.Request.Path);
+    await next();
+});
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");

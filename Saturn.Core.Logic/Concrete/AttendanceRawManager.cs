@@ -24,19 +24,26 @@ namespace Saturn.Core.Logic.Concrete
             await _attendanceDataAccess.SaveChangesAsync();
         }
 
-        public Task Delete(AttendanceRaw attendanceRaw)
+        public async Task Delete(AttendanceRaw attendanceRaw)
         {
-            throw new NotImplementedException();
+              _attendanceDataAccess?.DeleteAsync(attendanceRaw);
+
         }
 
-        public Task<IEnumerable<AttendanceRaw>> GetAll(Func<AttendanceRaw, bool> predicte)
+        public async Task<IEnumerable<AttendanceRaw>> GetAll(Func<AttendanceRaw, bool> predicte)
         {
-            throw new NotImplementedException();
+           return await _attendanceDataAccess.GetAllAsync(predicte);
         }
 
-        public Task Update(AttendanceRaw attendanceRaw)
+        public async Task<IEnumerable<AttendanceRaw>> GetAll()
         {
-            throw new NotImplementedException();
+            return await _attendanceDataAccess.GetAllAsync();
+        }
+
+        public async Task Update(AttendanceRaw attendanceRaw)
+        {
+            _attendanceDataAccess.UpdateAsync(attendanceRaw);
+            await _attendanceDataAccess.SaveChangesAsync();
         }
     }
 }

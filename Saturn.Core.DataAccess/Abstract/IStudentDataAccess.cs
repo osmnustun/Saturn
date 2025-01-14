@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 
 namespace Saturn.Core.DataAccess.Abstract
 {
-    public interface IStudentDataAccess:IEfCoreDataAccess<Student>
+    public interface IStudentDataAccess : IEfCoreDataAccess<Student>
     {
+       
     }
 }
