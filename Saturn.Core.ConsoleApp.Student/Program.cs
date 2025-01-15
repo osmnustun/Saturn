@@ -1,37 +1,38 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Newtonsoft.Json;
 using Saturn.Core.Entity.DatabaseEntities;
+using System.DirectoryServices.AccountManagement;
 using System.Text;
 
 namespace Saturn.Core.ConsoleApp.Student
 {
     internal class Program
     {
-
         static async Task Main(string[] args)
         {
             // Kullanıcı bilgilerini al
             string userName = Environment.UserName; // Kullanıcı adı
             string machineName = Environment.MachineName; // Bilgisayar adı
-            string domainName = Environment.UserDomainName; // Domain ya da tam ad (domain yoksa kullanıcı adı)
+            string domainName = GetADFullName(Environment.UserName); // Active Directory Full Name (tam ad)
 
-           
             // Kullanıcı bilgilerini ekrana yazdır
             Console.WriteLine($"Kullanıcı Adı: {userName}");
             Console.WriteLine($"Bilgisayar Adı: {machineName}");
-            Console.WriteLine($"Tam Ad (Domain veya Kullanıcı): {domainName}");
+            Console.WriteLine($"Tam Ad (AD Full Name): {domainName}");
 
             // JSON dönüştürücüyü kullanarak JSON string oluştur
-            var jsonPayload = JsonConvert.SerializeObject(new AttendanceRaw() { FullName=domainName, PcName=machineName, Username=userName });
-
-
+            var jsonPayload = JsonConvert.SerializeObject(new AttendanceRaw()
+            {
+                FullName = domainName,
+                PcName = machineName,
+                Username = userName
+            });
 
             // JSON içeriğini ekrana yazdır
             Console.WriteLine("JSON Payload:");
             Console.WriteLine(jsonPayload);
 
             // API adresi (değiştirmeniz gerekebilir)
-   
             string apiUrl = ReadApiUrlFromFile("api_url.txt");
 
             if (string.IsNullOrEmpty(apiUrl))
@@ -39,6 +40,7 @@ namespace Saturn.Core.ConsoleApp.Student
                 Console.WriteLine("API adresi dosyadan okunamadı!");
                 return;
             }
+
             // HTTP Client ile POST isteği gönder
             using (HttpClient client = new HttpClient())
             {
@@ -70,7 +72,25 @@ namespace Saturn.Core.ConsoleApp.Student
                 }
             }
 
-            Console.ReadKey();
+            Console.ReadLine();
+        }
+
+        // Kullanıcının Active Directory'deki Full Name bilgisini almak için yardımcı metot
+        static string GetADFullName(string userName)
+        {
+            try
+            {
+                using (PrincipalContext context = new PrincipalContext(ContextType.Domain))
+                {
+                    UserPrincipal user = UserPrincipal.FindByIdentity(context, userName);
+                    return user?.DisplayName ?? "Full Name alınamadı";
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Active Directory'den kullanıcı bilgileri alınırken bir hata oluştu: {ex.Message}");
+                return "Full Name alınamadı";
+            }
         }
 
         static string ReadApiUrlFromFile(string filePath)
@@ -86,7 +106,5 @@ namespace Saturn.Core.ConsoleApp.Student
                 return null;
             }
         }
-
-       
     }
 }

@@ -8,7 +8,7 @@ namespace Saturn.Core.Logic.RemoteApi
 {
     public static class DomainData
     {
-        //public static string Domain { get; set; } = "https://localhost:7059/api/";
-        public static string Domain { get; set; } = "https://silivribilsem.com/api/";
+        public static string Domain { get; set; } = "https://localhost:7059/api/";
+        //public static string Domain { get; set; } = "https://silivribilsem.com/api/";
     }
 }

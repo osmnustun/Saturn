@@ -16,7 +16,7 @@ namespace Saturn.Core.Web.API
             _attendanceRawService = attendanceRawService;
         }
 
-        [HttpPost("addattendanceraw")]
+        [HttpPost("attendanceraw")]
         public async Task<IActionResult> AddAttendance([FromBody] AttendanceRaw Attendance)
         {
             if (Attendance == null)
