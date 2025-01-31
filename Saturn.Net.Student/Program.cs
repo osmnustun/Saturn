@@ -1,10 +1,15 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Newtonsoft.Json;
-using Saturn.Core.Entity.DatabaseEntities;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using System;
+using System.Collections.Generic;
 using System.DirectoryServices.AccountManagement;
+using System.IO;
+using System.Linq;
+using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace Saturn.Core.ConsoleApp.Student
+namespace Saturn.Net.Student
 {
     internal class Program
     {
@@ -58,17 +63,61 @@ namespace Saturn.Core.ConsoleApp.Student
                         Console.WriteLine("Bilgiler başarıyla gönderildi.");
                         string responseContent = await response.Content.ReadAsStringAsync();
                         Console.WriteLine($"API Yanıtı: {responseContent}");
+                       
+                        string[] asciiOK = {
+                                               "  OOO   K   K   ",
+                                               " O   O  K  K                              =",
+                                               " O   O  K K                             =",
+                                               " O   O  KK                           =",
+                                               " O   O  K K                       =",
+                                               " O   O  K  K            ===     =",
+                                               "  OOO   K   K              ==="
+                                           };
+
+                        for (int i = 0; i < asciiOK.Length; i++)
+                        {
+                            Console.SetCursorPosition(5, 10 + i); // Konsolda ortalamak için
+                            Console.WriteLine(asciiOK[i]);
+                        }
                     }
                     else
                     {
                         Console.WriteLine($"Hata: {response.StatusCode}");
                         string errorContent = await response.Content.ReadAsStringAsync();
                         Console.WriteLine($"Hata Detayı: {errorContent}");
+
+                        string[] asciiFAILX = {
+                                                 "FFFF   AAAAA  III  L           X   X ",
+                                                 "F      A   A   I   L            X X  ",
+                                                 "FFF    AAAAA   I   L             X   ",
+                                                 "F      A   A   I   L            X X  ",
+                                                 "F      A   A  III  LLLLL       X   X "
+                                             };
+
+                        for (int i = 0; i < asciiFAILX.Length; i++)
+                        {
+                            Console.SetCursorPosition(5, 10 + i); // Yazıyı ortalamak için
+                            Console.WriteLine(asciiFAILX[i]);
+                        }
                     }
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine($"Bir hata oluştu: {ex.Message}");
+                   
+                    string[] asciiFAILX = {
+                                                 "FFFF   AAAAA  III  L           X   X ",
+                                                 "F      A   A   I   L            X X  ",
+                                                 "FFF    AAAAA   I   L             X   ",
+                                                 "F      A   A   I   L            X X  ",
+                                                 "F      A   A  III  LLLLL       X   X "
+                                             };
+
+                    for (int i = 0; i < asciiFAILX.Length; i++)
+                    {
+                        Console.SetCursorPosition(5, 10 + i); // Yazıyı ortalamak için
+                        Console.WriteLine(asciiFAILX[i]);
+                    }
                 }
             }
 
@@ -106,5 +155,16 @@ namespace Saturn.Core.ConsoleApp.Student
                 return null;
             }
         }
+    }
+
+    internal class AttendanceRaw
+    {
+        public AttendanceRaw()
+        {
+        }
+
+        public string FullName { get; set; }
+        public string PcName { get; set; }
+        public string Username { get; set; }
     }
 }
