@@ -1,6 +1,7 @@
 ﻿using Saturn.Core.DataAccess.Abstract;
 using Saturn.Core.Entity.DatabaseEntities;
 using Saturn.Core.Logic.Abstract;
+using Saturn.Core.Logic.RemoteApi;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,10 +13,11 @@ namespace Saturn.Core.Logic.Concrete
     public class AttendanceRawManager : IAttendanceRawService
     {
         readonly IAttendanceRawDataAccess _attendanceDataAccess;
-
-        public AttendanceRawManager(IAttendanceRawDataAccess attendanceDataAccess)
+        readonly ApiService _apiService;
+        public AttendanceRawManager(IAttendanceRawDataAccess attendanceDataAccess, ApiService apiService)
         {
             _attendanceDataAccess = attendanceDataAccess;
+            _apiService = apiService;
         }
 
         public async Task Add(AttendanceRaw attendanceRaw)
@@ -38,6 +40,12 @@ namespace Saturn.Core.Logic.Concrete
         public async Task<IEnumerable<AttendanceRaw>> GetAll()
         {
             return await _attendanceDataAccess.GetAllAsync();
+        }
+
+        public async Task<IEnumerable<AttendanceRaw>> GetAllRemote()
+        {
+            var resault = await _apiService.GetAsync<List<AttendanceRaw>>(DomainData.Domain + "getattendanceraw", "");
+            return resault;
         }
 
         public async Task Update(AttendanceRaw attendanceRaw)

@@ -14,5 +14,6 @@ namespace Saturn.Core.Logic.Abstract
         Task Delete(AttendanceRaw attendanceRaw);
         Task<IEnumerable<AttendanceRaw>> GetAll(Func<AttendanceRaw, bool> predicte);
         Task<IEnumerable<AttendanceRaw>> GetAll();
+        Task<IEnumerable<AttendanceRaw>> GetAllRemote();
     }
 }

@@ -26,5 +26,14 @@ namespace Saturn.Core.Web.API
             return Ok();
 
         }
+
+        [HttpGet("getattendanceraw")]
+        public async Task<IActionResult> GetAttendance()
+        {
+            
+           var resault= await _attendanceRawService.GetAll();
+            return Ok(resault);
+
+        }
     }
 }

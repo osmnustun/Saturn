@@ -6,15 +6,30 @@ using System.DirectoryServices.AccountManagement;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Saturn.Net.Student
 {
     internal class Program
     {
+        [DllImport("kernel32.dll")]
+        static extern IntPtr GetConsoleWindow();
+
+        [DllImport("user32.dll")]
+        static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+        const int SW_HIDE = 0;  // Pencereyi gizler
+        const int SW_SHOW = 5;  // Pencereyi göster         
         static async Task Main(string[] args)
         {
+            IntPtr hWnd = GetConsoleWindow();
+            if (hWnd != IntPtr.Zero)
+            {
+                ShowWindow(hWnd, SW_HIDE);
+            }
             // Kullanıcı bilgilerini al
             string userName = Environment.UserName; // Kullanıcı adı
             string machineName = Environment.MachineName; // Bilgisayar adı
@@ -38,7 +53,8 @@ namespace Saturn.Net.Student
             Console.WriteLine(jsonPayload);
 
             // API adresi (değiştirmeniz gerekebilir)
-            string apiUrl = ReadApiUrlFromFile("api_url.txt");
+            //string apiUrl = ReadApiUrlFromFile("api_url.txt");
+            string apiUrl = "http://www.saturn.edu/api/attendance/attendanceraw";
 
             if (string.IsNullOrEmpty(apiUrl))
             {
@@ -63,7 +79,10 @@ namespace Saturn.Net.Student
                         Console.WriteLine("Bilgiler başarıyla gönderildi.");
                         string responseContent = await response.Content.ReadAsStringAsync();
                         Console.WriteLine($"API Yanıtı: {responseContent}");
-                       
+                        if (hWnd != IntPtr.Zero)
+                        {
+                            ShowWindow(hWnd, SW_SHOW); // Konsolu tekrar göster
+                        }
                         string[] asciiOK = {
                                                "  OOO   K   K   ",
                                                " O   O  K  K                              =",
@@ -85,7 +104,10 @@ namespace Saturn.Net.Student
                         Console.WriteLine($"Hata: {response.StatusCode}");
                         string errorContent = await response.Content.ReadAsStringAsync();
                         Console.WriteLine($"Hata Detayı: {errorContent}");
-
+                        if (hWnd != IntPtr.Zero)
+                        {
+                            ShowWindow(hWnd, SW_SHOW); // Konsolu tekrar göster
+                        }
                         string[] asciiFAILX = {
                                                  "FFFF   AAAAA  III  L           X   X ",
                                                  "F      A   A   I   L            X X  ",
@@ -104,7 +126,10 @@ namespace Saturn.Net.Student
                 catch (Exception ex)
                 {
                     Console.WriteLine($"Bir hata oluştu: {ex.Message}");
-                   
+                    if (hWnd != IntPtr.Zero)
+                    {
+                        ShowWindow(hWnd, SW_SHOW); // Konsolu tekrar göster
+                    }
                     string[] asciiFAILX = {
                                                  "FFFF   AAAAA  III  L           X   X ",
                                                  "F      A   A   I   L            X X  ",
@@ -121,7 +146,7 @@ namespace Saturn.Net.Student
                 }
             }
 
-            Console.ReadLine();
+            Thread.Sleep(3000);
         }
 
         // Kullanıcının Active Directory'deki Full Name bilgisini almak için yardımcı metot

@@ -23,7 +23,7 @@ namespace Saturn.Core.Desktop.Teacher
             //    GroupId = 0,
             //    Username = "osman"
             //});
-            dgStudent.DataSource = await _studentService.RemoteGetAll();
+            dgStudent.DataSource = await _attendanceRawService.GetAllRemote();
         }
     }
 }
