@@ -23,6 +23,7 @@ namespace Saturn.Core.Logic.DependencyInjection
             services.AddScoped<IAttendanceRawDataAccess, AttendaceRawDataAccess>();
             services.AddScoped<IAttendanceRawService, AttendanceRawManager>();
             services.AddScoped<IStudentService, StudentManager>();
+            services.AddScoped<ILessonTimeTableServices, LessonTimeTablesManager>();
             services.AddScoped<ApiService>();
             return services;
 

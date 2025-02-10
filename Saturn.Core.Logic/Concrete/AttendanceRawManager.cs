@@ -44,7 +44,7 @@ namespace Saturn.Core.Logic.Concrete
 
         public async Task<IEnumerable<AttendanceRaw>> GetAllRemote()
         {
-            var resault = await _apiService.GetAsync<List<AttendanceRaw>>(DomainData.Domain + "getattendanceraw", "");
+            var resault = await _apiService.GetAsync<List<AttendanceRaw>>(DomainData.Domain + "attendance/getattendanceraw", "");
             return resault;
         }
 

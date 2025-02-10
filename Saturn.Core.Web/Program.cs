@@ -27,6 +27,8 @@ builder.Services.AddScoped<IStudentDataAccess, StudentDataAccess>();
 builder.Services.AddScoped<IAttendanceRawService,AttendanceRawManager>();
 builder.Services.AddScoped<IAttendaceDataAccess,AttendanceDataAccess>();
 builder.Services.AddScoped<IAttendanceRawDataAccess, AttendaceRawDataAccess>();
+builder.Services.AddScoped<IGroupDataAccess, GroupDataAccess>();
+builder.Services.AddScoped<ILessonTimeTableServices, LessonTimeTablesManager>();
 builder.Services.AddScoped<ApiService>();
 
 
