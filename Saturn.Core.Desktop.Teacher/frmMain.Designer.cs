@@ -77,7 +77,7 @@
             tabControl1.Location = new Point(0, 0);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(1081, 723);
+            tabControl1.Size = new Size(1100, 723);
             tabControl1.TabIndex = 0;
             // 
             // tpStudents
@@ -196,7 +196,7 @@
             tpLessonPlans.Location = new Point(4, 24);
             tpLessonPlans.Name = "tpLessonPlans";
             tpLessonPlans.Padding = new Padding(3);
-            tpLessonPlans.Size = new Size(1073, 695);
+            tpLessonPlans.Size = new Size(1092, 695);
             tpLessonPlans.TabIndex = 3;
             tpLessonPlans.Text = "Ders Programı";
             tpLessonPlans.UseVisualStyleBackColor = true;
@@ -317,7 +317,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1081, 723);
+            ClientSize = new Size(1100, 723);
             Controls.Add(tabControl1);
             Name = "frmMain";
             Text = "Saturn Teacher";

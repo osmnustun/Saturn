@@ -61,29 +61,34 @@ namespace Saturn.Net.Student
                 Console.WriteLine("API adresi dosyadan okunamadı!");
                 return;
             }
-
-            // HTTP Client ile POST isteği gönder
-            using (HttpClient client = new HttpClient())
+            HttpResponseMessage response= new HttpResponseMessage();
+            response.StatusCode = System.Net.HttpStatusCode.BadRequest;
+            int tryCount = 0;
+            while (response.StatusCode != System.Net.HttpStatusCode.OK)
             {
-                try
+                // HTTP Client ile POST isteği gönder
+                using (HttpClient client = new HttpClient())
                 {
-                    // JSON içeriğini oluştur
-                    StringContent content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
-
-                    // POST isteği yap
-                    HttpResponseMessage response = await client.PostAsync(apiUrl, content);
-
-                    // Yanıtı kontrol et
-                    if (response.IsSuccessStatusCode)
+                    try
                     {
-                        Console.WriteLine("Bilgiler başarıyla gönderildi.");
-                        string responseContent = await response.Content.ReadAsStringAsync();
-                        Console.WriteLine($"API Yanıtı: {responseContent}");
-                        if (hWnd != IntPtr.Zero)
+                        // JSON içeriğini oluştur
+                        StringContent content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+
+                        // POST isteği yap
+                        response = await client.PostAsync(apiUrl, content);
+
+
+                        // Yanıtı kontrol et
+                        if (response.IsSuccessStatusCode)
                         {
-                            ShowWindow(hWnd, SW_SHOW); // Konsolu tekrar göster
-                        }
-                        string[] asciiOK = {
+                            Console.WriteLine("Bilgiler başarıyla gönderildi.");
+                            string responseContent = await response.Content.ReadAsStringAsync();
+                            Console.WriteLine($"API Yanıtı: {responseContent}");
+                            if (hWnd != IntPtr.Zero)
+                            {
+                                ShowWindow(hWnd, SW_SHOW); // Konsolu tekrar göster
+                            }
+                            string[] asciiOK = {
                                                "  OOO   K   K   ",
                                                " O   O  K  K                              =",
                                                " O   O  K K                             =",
@@ -93,22 +98,23 @@ namespace Saturn.Net.Student
                                                "  OOO   K   K              ==="
                                            };
 
-                        for (int i = 0; i < asciiOK.Length; i++)
-                        {
-                            Console.SetCursorPosition(5, 10 + i); // Konsolda ortalamak için
-                            Console.WriteLine(asciiOK[i]);
+                            for (int i = 0; i < asciiOK.Length; i++)
+                            {
+                               // Console.SetCursorPosition(5, 10 + i); // Konsolda ortalamak için
+                                Console.WriteLine(asciiOK[i]);
+                            }
+                            break;
                         }
-                    }
-                    else
-                    {
-                        Console.WriteLine($"Hata: {response.StatusCode}");
-                        string errorContent = await response.Content.ReadAsStringAsync();
-                        Console.WriteLine($"Hata Detayı: {errorContent}");
-                        if (hWnd != IntPtr.Zero)
+                        else
                         {
-                            ShowWindow(hWnd, SW_SHOW); // Konsolu tekrar göster
-                        }
-                        string[] asciiFAILX = {
+                            Console.WriteLine($"Hata: {response.StatusCode}");
+                            string errorContent = await response.Content.ReadAsStringAsync();
+                            Console.WriteLine($"Hata Detayı: {errorContent}");
+                            if (hWnd != IntPtr.Zero)
+                            {
+                                ShowWindow(hWnd, SW_SHOW); // Konsolu tekrar göster
+                            }
+                            string[] asciiFAILX = {
                                                  "FFFF   AAAAA  III  L           X   X ",
                                                  "F      A   A   I   L            X X  ",
                                                  "FFF    AAAAA   I   L             X   ",
@@ -116,36 +122,39 @@ namespace Saturn.Net.Student
                                                  "F      A   A  III  LLLLL       X   X "
                                              };
 
-                        for (int i = 0; i < asciiFAILX.Length; i++)
-                        {
-                            Console.SetCursorPosition(5, 10 + i); // Yazıyı ortalamak için
-                            Console.WriteLine(asciiFAILX[i]);
+                            for (int i = 0; i < asciiFAILX.Length; i++)
+                            {
+                                Console.SetCursorPosition(5, 10 + i); // Yazıyı ortalamak için
+                                Console.WriteLine(asciiFAILX[i]);
+                            }
                         }
                     }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Bir hata oluştu: {ex.Message}");
-                    if (hWnd != IntPtr.Zero)
+                    catch (Exception ex)
                     {
-                        ShowWindow(hWnd, SW_SHOW); // Konsolu tekrar göster
-                    }
-                    string[] asciiFAILX = {
-                                                 "FFFF   AAAAA  III  L           X   X ",
-                                                 "F      A   A   I   L            X X  ",
-                                                 "FFF    AAAAA   I   L             X   ",
-                                                 "F      A   A   I   L            X X  ",
-                                                 "F      A   A  III  LLLLL       X   X "
-                                             };
+                        Console.WriteLine($"Bir hata oluştu: {ex.Message}");
+                        //if (hWnd != IntPtr.Zero)
+                        //{
+                        //    ShowWindow(hWnd, SW_SHOW); // Konsolu tekrar göster
+                        //}
+                        //string[] asciiFAILX = {
+                        //                         "FFFF   AAAAA  III  L           X   X ",
+                        //                         "F      A   A   I   L            X X  ",
+                        //                         "FFF    AAAAA   I   L             X   ",
+                        //                         "F      A   A   I   L            X X  ",
+                        //                         "F      A   A  III  LLLLL       X   X "
+                        //                     };
 
-                    for (int i = 0; i < asciiFAILX.Length; i++)
-                    {
-                        Console.SetCursorPosition(5, 10 + i); // Yazıyı ortalamak için
-                        Console.WriteLine(asciiFAILX[i]);
+                        //for (int i = 0; i < asciiFAILX.Length; i++)
+                        //{
+                        //    Console.SetCursorPosition(5, 10 + i); // Yazıyı ortalamak için
+                        //    Console.WriteLine(asciiFAILX[i]);
+                        //}
                     }
                 }
+                tryCount++;
+                Console.WriteLine("Tekrar deneniyor -> "+tryCount);
+                Thread.Sleep(1000);
             }
-
             Thread.Sleep(3000);
         }
 
