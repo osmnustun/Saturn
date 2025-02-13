@@ -26,6 +26,7 @@ namespace Saturn.Core.DataAccess.Concrete
             }
           
         }
+       
         //static readonly string connectionString = "Server = localhost;user ID= silivribilsem_com_saturn; Password =X2kkPrV10kwqfs#e7;Database=silivribilsem_com_saturndb;";// For product
 
         // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -38,8 +39,9 @@ namespace Saturn.Core.DataAccess.Concrete
         public DbSet<Lesson> Groups { get; set; }
         public DbSet<AttendanceRaw> AttendanceRaws { get; set; }
         public DbSet<Attendance> Attendances { get; set; }
+        public DbSet<StudentsLessons> StudentsLessons { get; set; }
         //public DbSet<Teacher> Teachers { get; set; }
 
-      
+
     }
 }

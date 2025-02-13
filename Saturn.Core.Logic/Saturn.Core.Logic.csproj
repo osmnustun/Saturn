@@ -10,6 +10,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="QuestPDF" Version="2025.1.2" />
   </ItemGroup>
 
   <ItemGroup>

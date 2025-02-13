@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Saturn.Core.DataAccess.Concrete;
 
@@ -10,14 +11,31 @@ using Saturn.Core.DataAccess.Concrete;
 namespace Saturn.Core.DataAccess.Migrations
 {
     [DbContext(typeof(SaturnDbContext))]
-    partial class SaturnDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250213080332_m4")]
+    partial class m4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "8.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
+
+            modelBuilder.Entity("LessonStudent", b =>
+                {
+                    b.Property<int>("GroupsLessonId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StudentsStudentId")
+                        .HasColumnType("int");
+
+                    b.HasKey("GroupsLessonId", "StudentsStudentId");
+
+                    b.HasIndex("StudentsStudentId");
+
+                    b.ToTable("LessonStudent");
+                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
@@ -179,6 +197,9 @@ namespace Saturn.Core.DataAccess.Migrations
                     b.Property<string>("StartTime")
                         .HasColumnType("longtext");
 
+                    b.Property<int>("StudentId")
+                        .HasColumnType("int");
+
                     b.Property<string>("TeacherId")
                         .HasColumnType("varchar(255)");
 
@@ -210,6 +231,9 @@ namespace Saturn.Core.DataAccess.Migrations
                     b.Property<string>("FullName")
                         .HasColumnType("longtext");
 
+                    b.Property<int>("GroupId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Username")
                         .HasColumnType("longtext");
 
@@ -218,27 +242,6 @@ namespace Saturn.Core.DataAccess.Migrations
                     b.HasIndex("AttendanceId");
 
                     b.ToTable("Students");
-                });
-
-            modelBuilder.Entity("Saturn.Core.Entity.DatabaseEntities.StudentsLessons", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<int>("LessonId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StudentId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("LessonId");
-
-                    b.HasIndex("StudentId");
-
-                    b.ToTable("StudentsLessons");
                 });
 
             modelBuilder.Entity("Saturn.Core.Entity.DatabaseEntities.User", b =>
@@ -341,6 +344,21 @@ namespace Saturn.Core.DataAccess.Migrations
                     b.ToTable("AspNetRoles", (string)null);
                 });
 
+            modelBuilder.Entity("LessonStudent", b =>
+                {
+                    b.HasOne("Saturn.Core.Entity.DatabaseEntities.Lesson", null)
+                        .WithMany()
+                        .HasForeignKey("GroupsLessonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Saturn.Core.Entity.DatabaseEntities.Student", null)
+                        .WithMany()
+                        .HasForeignKey("StudentsStudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Saturn.Core.Entity.DatabaseEntities.UserRole", null)
@@ -408,38 +426,9 @@ namespace Saturn.Core.DataAccess.Migrations
                         .HasForeignKey("AttendanceId");
                 });
 
-            modelBuilder.Entity("Saturn.Core.Entity.DatabaseEntities.StudentsLessons", b =>
-                {
-                    b.HasOne("Saturn.Core.Entity.DatabaseEntities.Lesson", "Lesson")
-                        .WithMany("Students")
-                        .HasForeignKey("LessonId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Saturn.Core.Entity.DatabaseEntities.Student", "Student")
-                        .WithMany("Groups")
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Lesson");
-
-                    b.Navigation("Student");
-                });
-
             modelBuilder.Entity("Saturn.Core.Entity.DatabaseEntities.Attendance", b =>
                 {
                     b.Navigation("Students");
-                });
-
-            modelBuilder.Entity("Saturn.Core.Entity.DatabaseEntities.Lesson", b =>
-                {
-                    b.Navigation("Students");
-                });
-
-            modelBuilder.Entity("Saturn.Core.Entity.DatabaseEntities.Student", b =>
-                {
-                    b.Navigation("Groups");
                 });
 #pragma warning restore 612, 618
         }

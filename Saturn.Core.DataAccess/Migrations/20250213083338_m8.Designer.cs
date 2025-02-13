@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Saturn.Core.DataAccess.Concrete;
 
@@ -10,9 +11,11 @@ using Saturn.Core.DataAccess.Concrete;
 namespace Saturn.Core.DataAccess.Migrations
 {
     [DbContext(typeof(SaturnDbContext))]
-    partial class SaturnDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250213083338_m8")]
+    partial class m8
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

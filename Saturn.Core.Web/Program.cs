@@ -2,6 +2,7 @@
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using Saturn.Core.DataAccess.Abstract;
 using Saturn.Core.DataAccess.Concrete;
 using Saturn.Core.Entity.DatabaseEntities;
@@ -11,6 +12,7 @@ using Saturn.Core.Logic.Concrete;
 using Saturn.Core.Logic.RemoteApi;
 using System.Configuration;
 using System.Text;
+using Newtonsoft.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,7 +32,12 @@ builder.Services.AddScoped<IAttendanceRawDataAccess, AttendaceRawDataAccess>();
 builder.Services.AddScoped<IGroupDataAccess, GroupDataAccess>();
 builder.Services.AddScoped<ILessonTimeTableServices, LessonTimeTablesManager>();
 builder.Services.AddScoped<ApiService>();
-
+builder.Services.AddControllers()
+    .AddNewtonsoftJson(options =>
+    {
+        // Döngüsel referanslarý otomatik çöz
+        options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+    });
 
 builder.Services.AddIdentity<User, UserRole>(
     options =>

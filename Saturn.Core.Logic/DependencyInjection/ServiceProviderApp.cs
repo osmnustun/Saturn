@@ -4,6 +4,7 @@ using Saturn.Core.DataAccess.Concrete;
 using Saturn.Core.Logic.Abstract;
 using Saturn.Core.Logic.Concrete;
 using Saturn.Core.Logic.RemoteApi;
+using Saturn.Core.Logic.Report;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,7 @@ namespace Saturn.Core.Logic.DependencyInjection
             services.AddScoped<IStudentService, StudentManager>();
             services.AddScoped<ILessonTimeTableServices, LessonTimeTablesManager>();
             services.AddScoped<ApiService>();
+            services.AddScoped<ReportTools>();
             return services;
 
         }

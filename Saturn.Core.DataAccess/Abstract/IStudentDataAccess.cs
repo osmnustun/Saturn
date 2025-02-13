@@ -9,6 +9,6 @@ namespace Saturn.Core.DataAccess.Abstract
 {
     public interface IStudentDataAccess : IEfCoreDataAccess<Student>
     {
-       
+       Task<List<Student>> GetAllStudentWithGroupsAsync();
     }
 }

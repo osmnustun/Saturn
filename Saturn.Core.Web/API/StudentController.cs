@@ -24,10 +24,22 @@ namespace Saturn.Core.Web.API
         }
 
         [HttpPost("add")]
-        public async Task AddStudent([FromBody] Student student)
+        public async Task<IActionResult> AddStudent([FromBody] Student student)
         {
              await _studentService.Add(student);
-
+            return Ok();
+        }
+        [HttpPost("remove")]
+        public async Task<IActionResult> Remove([FromBody] Student student)
+        {
+            await _studentService.Delete(student);
+            return Ok();
+        }
+        [HttpPost("update")]
+        public async Task<IActionResult> Update([FromBody] Student student)
+        {
+            await _studentService.Update(student);
+            return Ok();
         }
     }
 }

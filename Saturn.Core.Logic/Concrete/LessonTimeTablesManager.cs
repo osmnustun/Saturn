@@ -32,19 +32,21 @@ namespace Saturn.Core.Logic.Concrete
            await  _apiService.PostAsync<Lesson, Lesson>(DomainData.Domain + "LessonTimeTables/add", lessonTimeTable);
         }
 
-        public Task Delete(Lesson lessonTimeTable)
+        public async Task Delete(Lesson lessonTimeTable)
         {
-            throw new NotImplementedException();
+            await _groupDataAccess.DeleteAsync(lessonTimeTable);
+            await _groupDataAccess.SaveChangesAsync();
         }
 
-        public Task DeleteRemote(Lesson lessonTimeTable)
+        public async Task DeleteRemote(Lesson lessonTimeTable)
         {
-            throw new NotImplementedException();
+            await _apiService.PostAsync<Lesson, Lesson>(DomainData.Domain + "LessonTimeTables/remove", lessonTimeTable);
         }
 
-        public Task<IEnumerable<Lesson>> GetAll(Func<Lesson, bool> predicte)
+        public async Task<IEnumerable<Lesson>> GetAll(Func<Lesson, bool> predicte)
         {
-            throw new NotImplementedException();
+            return await _groupDataAccess.GetAllAsync(predicte);
+           
         }
 
         public async Task<IEnumerable<Lesson>> GetAll()
@@ -52,9 +54,16 @@ namespace Saturn.Core.Logic.Concrete
             return await _groupDataAccess.GetAllAsync();
         }
 
-        public Task<IEnumerable<Lesson>> GetAllRemote(Func<Lesson, bool> predicte)
+        public async Task<List<Lesson>> GetAllGroups()
         {
-            throw new NotImplementedException();
+            var resault= await _apiService.GetAsync<IEnumerable<Lesson>>(DomainData.Domain + "LessonTimeTables/getall", "");
+            return (List<Lesson>)resault;
+            
+        }
+
+        public  async Task<IEnumerable<Lesson>> GetAllRemote(Func<Lesson, bool> predicte)
+        {
+          return await _apiService.GetAsync<IEnumerable<Lesson>>(DomainData.Domain + "LessonTimeTables/getall","");
         }
 
         public async Task<IEnumerable<Lesson>> GetAllRemote()
@@ -63,14 +72,16 @@ namespace Saturn.Core.Logic.Concrete
             return resault;
         }
 
-        public Task<Lesson> Update(Lesson lessonTimeTable)
+        public async Task<Lesson> Update(Lesson lessonTimeTable)
         {
-            throw new NotImplementedException();
+            var resault= await _groupDataAccess.UpdateAsync(lessonTimeTable);
+            await _groupDataAccess.SaveChangesAsync();
+            return resault;
         }
 
-        public Task<Lesson> UpdateRemote(Lesson lessonTimeTable)
+        public async Task<Lesson> UpdateRemote(Lesson lessonTimeTable)
         {
-            throw new NotImplementedException();
+            return await _apiService.PostAsync<Lesson, Lesson>(DomainData.Domain + "LessonTimeTables/update", lessonTimeTable);
         }
     }
 }

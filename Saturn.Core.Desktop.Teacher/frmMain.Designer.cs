@@ -29,15 +29,32 @@
         private void InitializeComponent()
         {
             tabControl1 = new TabControl();
+            tpAttendance = new TabPage();
+            gbReport = new GroupBox();
+            wVReport = new Microsoft.Web.WebView2.WinForms.WebView2();
+            groupBox2 = new GroupBox();
+            dgAttendance = new DataGridView();
+            groupBox4 = new GroupBox();
             tpStudents = new TabPage();
             dbStudents = new GroupBox();
             dgStudent = new DataGridView();
+            groupBox5 = new GroupBox();
+            btnStudentUpdate = new Button();
+            btnStudentRemove = new Button();
+            btnStudentAdd = new Button();
+            gbGroups = new GroupBox();
+            label8 = new Label();
+            txtClass = new TextBox();
+            label7 = new Label();
+            txtBilsemNo = new TextBox();
+            label9 = new Label();
+            txtUserName = new TextBox();
+            label6 = new Label();
+            txtFullName = new TextBox();
+            label5 = new Label();
             tpRawData = new TabPage();
             groupBox1 = new GroupBox();
             dgvRawData = new DataGridView();
-            tpAttendance = new TabPage();
-            groupBox2 = new GroupBox();
-            dgAttendance = new DataGridView();
             tpLessonPlans = new TabPage();
             btnLessonUpdate = new Button();
             btnLessonRemove = new Button();
@@ -53,15 +70,18 @@
             groupBox3 = new GroupBox();
             dgLessonPlans = new DataGridView();
             tabControl1.SuspendLayout();
+            tpAttendance.SuspendLayout();
+            gbReport.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)wVReport).BeginInit();
+            groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgAttendance).BeginInit();
             tpStudents.SuspendLayout();
             dbStudents.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgStudent).BeginInit();
+            groupBox5.SuspendLayout();
             tpRawData.SuspendLayout();
             groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvRawData).BeginInit();
-            tpAttendance.SuspendLayout();
-            groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dgAttendance).BeginInit();
             tpLessonPlans.SuspendLayout();
             groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgLessonPlans).BeginInit();
@@ -69,24 +89,94 @@
             // 
             // tabControl1
             // 
+            tabControl1.Controls.Add(tpAttendance);
             tabControl1.Controls.Add(tpStudents);
             tabControl1.Controls.Add(tpRawData);
-            tabControl1.Controls.Add(tpAttendance);
             tabControl1.Controls.Add(tpLessonPlans);
             tabControl1.Dock = DockStyle.Fill;
             tabControl1.Location = new Point(0, 0);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(1100, 723);
+            tabControl1.Size = new Size(1167, 723);
             tabControl1.TabIndex = 0;
+            // 
+            // tpAttendance
+            // 
+            tpAttendance.Controls.Add(gbReport);
+            tpAttendance.Controls.Add(groupBox2);
+            tpAttendance.Controls.Add(groupBox4);
+            tpAttendance.Location = new Point(4, 24);
+            tpAttendance.Name = "tpAttendance";
+            tpAttendance.Padding = new Padding(3);
+            tpAttendance.Size = new Size(1159, 695);
+            tpAttendance.TabIndex = 2;
+            tpAttendance.Text = "Yoklamalar";
+            tpAttendance.UseVisualStyleBackColor = true;
+            // 
+            // gbReport
+            // 
+            gbReport.Controls.Add(wVReport);
+            gbReport.Dock = DockStyle.Fill;
+            gbReport.Location = new Point(361, 3);
+            gbReport.Name = "gbReport";
+            gbReport.Size = new Size(527, 689);
+            gbReport.TabIndex = 2;
+            gbReport.TabStop = false;
+            gbReport.Text = "Rapor";
+            // 
+            // wVReport
+            // 
+            wVReport.AllowExternalDrop = true;
+            wVReport.CreationProperties = null;
+            wVReport.DefaultBackgroundColor = Color.White;
+            wVReport.Dock = DockStyle.Fill;
+            wVReport.Location = new Point(3, 19);
+            wVReport.Name = "wVReport";
+            wVReport.Size = new Size(521, 667);
+            wVReport.TabIndex = 2;
+            wVReport.ZoomFactor = 1D;
+            // 
+            // groupBox2
+            // 
+            groupBox2.Controls.Add(dgAttendance);
+            groupBox2.Dock = DockStyle.Left;
+            groupBox2.Location = new Point(3, 3);
+            groupBox2.Name = "groupBox2";
+            groupBox2.Size = new Size(358, 689);
+            groupBox2.TabIndex = 1;
+            groupBox2.TabStop = false;
+            groupBox2.Text = "Yoklama Listesi";
+            // 
+            // dgAttendance
+            // 
+            dgAttendance.AllowUserToAddRows = false;
+            dgAttendance.AllowUserToDeleteRows = false;
+            dgAttendance.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgAttendance.Dock = DockStyle.Fill;
+            dgAttendance.Location = new Point(3, 19);
+            dgAttendance.Name = "dgAttendance";
+            dgAttendance.ReadOnly = true;
+            dgAttendance.Size = new Size(352, 667);
+            dgAttendance.TabIndex = 0;
+            // 
+            // groupBox4
+            // 
+            groupBox4.Dock = DockStyle.Right;
+            groupBox4.Location = new Point(888, 3);
+            groupBox4.Name = "groupBox4";
+            groupBox4.Size = new Size(268, 689);
+            groupBox4.TabIndex = 3;
+            groupBox4.TabStop = false;
+            groupBox4.Text = "Rapor İşlemleri";
             // 
             // tpStudents
             // 
             tpStudents.Controls.Add(dbStudents);
+            tpStudents.Controls.Add(groupBox5);
             tpStudents.Location = new Point(4, 24);
             tpStudents.Name = "tpStudents";
             tpStudents.Padding = new Padding(3);
-            tpStudents.Size = new Size(1073, 695);
+            tpStudents.Size = new Size(1159, 695);
             tpStudents.TabIndex = 0;
             tpStudents.Text = "Öğrenciler";
             tpStudents.UseVisualStyleBackColor = true;
@@ -94,10 +184,10 @@
             // dbStudents
             // 
             dbStudents.Controls.Add(dgStudent);
-            dbStudents.Dock = DockStyle.Left;
+            dbStudents.Dock = DockStyle.Fill;
             dbStudents.Location = new Point(3, 3);
             dbStudents.Name = "dbStudents";
-            dbStudents.Size = new Size(614, 689);
+            dbStudents.Size = new Size(602, 689);
             dbStudents.TabIndex = 0;
             dbStudents.TabStop = false;
             // 
@@ -110,8 +200,143 @@
             dgStudent.Location = new Point(3, 19);
             dgStudent.Name = "dgStudent";
             dgStudent.ReadOnly = true;
-            dgStudent.Size = new Size(608, 667);
-            dgStudent.TabIndex = 0;
+            dgStudent.Size = new Size(596, 667);
+            dgStudent.TabIndex = 1;
+            dgStudent.CellClick += dgStudent_CellClick;
+            // 
+            // groupBox5
+            // 
+            groupBox5.Controls.Add(btnStudentUpdate);
+            groupBox5.Controls.Add(btnStudentRemove);
+            groupBox5.Controls.Add(btnStudentAdd);
+            groupBox5.Controls.Add(gbGroups);
+            groupBox5.Controls.Add(label8);
+            groupBox5.Controls.Add(txtClass);
+            groupBox5.Controls.Add(label7);
+            groupBox5.Controls.Add(txtBilsemNo);
+            groupBox5.Controls.Add(label9);
+            groupBox5.Controls.Add(txtUserName);
+            groupBox5.Controls.Add(label6);
+            groupBox5.Controls.Add(txtFullName);
+            groupBox5.Controls.Add(label5);
+            groupBox5.Dock = DockStyle.Right;
+            groupBox5.Location = new Point(605, 3);
+            groupBox5.Name = "groupBox5";
+            groupBox5.Size = new Size(551, 689);
+            groupBox5.TabIndex = 1;
+            groupBox5.TabStop = false;
+            // 
+            // btnStudentUpdate
+            // 
+            btnStudentUpdate.Location = new Point(124, 583);
+            btnStudentUpdate.Name = "btnStudentUpdate";
+            btnStudentUpdate.Size = new Size(371, 23);
+            btnStudentUpdate.TabIndex = 20;
+            btnStudentUpdate.Text = "ÖĞRENCİ GÜNCELLE";
+            btnStudentUpdate.UseVisualStyleBackColor = true;
+            btnStudentUpdate.Click += btnStudentUpdate_Click;
+            // 
+            // btnStudentRemove
+            // 
+            btnStudentRemove.Location = new Point(124, 533);
+            btnStudentRemove.Name = "btnStudentRemove";
+            btnStudentRemove.Size = new Size(371, 23);
+            btnStudentRemove.TabIndex = 21;
+            btnStudentRemove.Text = "ÖĞRENCİ SİL";
+            btnStudentRemove.UseVisualStyleBackColor = true;
+            btnStudentRemove.Click += btnStudentRemove_Click;
+            // 
+            // btnStudentAdd
+            // 
+            btnStudentAdd.Location = new Point(124, 483);
+            btnStudentAdd.Name = "btnStudentAdd";
+            btnStudentAdd.Size = new Size(371, 23);
+            btnStudentAdd.TabIndex = 22;
+            btnStudentAdd.Text = "ÖĞRENCİ EKLE";
+            btnStudentAdd.UseVisualStyleBackColor = true;
+            btnStudentAdd.Click += btnStudentAdd_Click_1;
+            // 
+            // gbGroups
+            // 
+            gbGroups.Location = new Point(214, 275);
+            gbGroups.Name = "gbGroups";
+            gbGroups.Size = new Size(285, 150);
+            gbGroups.TabIndex = 19;
+            gbGroups.TabStop = false;
+            gbGroups.Text = "Gruplar";
+            // 
+            // label8
+            // 
+            label8.AutoSize = true;
+            label8.Location = new Point(86, 275);
+            label8.Name = "label8";
+            label8.Size = new Size(102, 15);
+            label8.TabIndex = 18;
+            label8.Text = "KAYITLI DERSLER :";
+            // 
+            // txtClass
+            // 
+            txtClass.Location = new Point(210, 198);
+            txtClass.Name = "txtClass";
+            txtClass.Size = new Size(285, 23);
+            txtClass.TabIndex = 17;
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Location = new Point(86, 201);
+            label7.Name = "label7";
+            label7.Size = new Size(43, 15);
+            label7.TabIndex = 16;
+            label7.Text = "SINIFI :";
+            // 
+            // txtBilsemNo
+            // 
+            txtBilsemNo.Location = new Point(210, 104);
+            txtBilsemNo.Name = "txtBilsemNo";
+            txtBilsemNo.Size = new Size(285, 23);
+            txtBilsemNo.TabIndex = 14;
+            // 
+            // label9
+            // 
+            label9.AutoSize = true;
+            label9.Location = new Point(86, 107);
+            label9.Name = "label9";
+            label9.Size = new Size(73, 15);
+            label9.TabIndex = 12;
+            label9.Text = "BİLSEM NO :";
+            // 
+            // txtUserName
+            // 
+            txtUserName.Location = new Point(210, 151);
+            txtUserName.Name = "txtUserName";
+            txtUserName.Size = new Size(285, 23);
+            txtUserName.TabIndex = 15;
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Location = new Point(86, 154);
+            label6.Name = "label6";
+            label6.Size = new Size(93, 15);
+            label6.TabIndex = 13;
+            label6.Text = "KULLANICI ADI :";
+            // 
+            // txtFullName
+            // 
+            txtFullName.Location = new Point(210, 57);
+            txtFullName.Name = "txtFullName";
+            txtFullName.Size = new Size(285, 23);
+            txtFullName.TabIndex = 11;
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Location = new Point(86, 60);
+            label5.Name = "label5";
+            label5.Size = new Size(75, 15);
+            label5.TabIndex = 10;
+            label5.Text = "ADI SOYADI :";
             // 
             // tpRawData
             // 
@@ -119,7 +344,7 @@
             tpRawData.Location = new Point(4, 24);
             tpRawData.Name = "tpRawData";
             tpRawData.Padding = new Padding(3);
-            tpRawData.Size = new Size(1073, 695);
+            tpRawData.Size = new Size(1159, 695);
             tpRawData.TabIndex = 1;
             tpRawData.Text = "Ham Veriler";
             tpRawData.UseVisualStyleBackColor = true;
@@ -146,39 +371,6 @@
             dgvRawData.Size = new Size(608, 667);
             dgvRawData.TabIndex = 0;
             // 
-            // tpAttendance
-            // 
-            tpAttendance.Controls.Add(groupBox2);
-            tpAttendance.Location = new Point(4, 24);
-            tpAttendance.Name = "tpAttendance";
-            tpAttendance.Padding = new Padding(3);
-            tpAttendance.Size = new Size(1073, 695);
-            tpAttendance.TabIndex = 2;
-            tpAttendance.Text = "Yoklamalar";
-            tpAttendance.UseVisualStyleBackColor = true;
-            // 
-            // groupBox2
-            // 
-            groupBox2.Controls.Add(dgAttendance);
-            groupBox2.Dock = DockStyle.Left;
-            groupBox2.Location = new Point(3, 3);
-            groupBox2.Name = "groupBox2";
-            groupBox2.Size = new Size(614, 689);
-            groupBox2.TabIndex = 1;
-            groupBox2.TabStop = false;
-            // 
-            // dgAttendance
-            // 
-            dgAttendance.AllowUserToAddRows = false;
-            dgAttendance.AllowUserToDeleteRows = false;
-            dgAttendance.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgAttendance.Dock = DockStyle.Fill;
-            dgAttendance.Location = new Point(3, 19);
-            dgAttendance.Name = "dgAttendance";
-            dgAttendance.ReadOnly = true;
-            dgAttendance.Size = new Size(608, 667);
-            dgAttendance.TabIndex = 0;
-            // 
             // tpLessonPlans
             // 
             tpLessonPlans.Controls.Add(btnLessonUpdate);
@@ -196,7 +388,7 @@
             tpLessonPlans.Location = new Point(4, 24);
             tpLessonPlans.Name = "tpLessonPlans";
             tpLessonPlans.Padding = new Padding(3);
-            tpLessonPlans.Size = new Size(1092, 695);
+            tpLessonPlans.Size = new Size(1159, 695);
             tpLessonPlans.TabIndex = 3;
             tpLessonPlans.Text = "Ders Programı";
             tpLessonPlans.UseVisualStyleBackColor = true;
@@ -317,21 +509,26 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1100, 723);
+            ClientSize = new Size(1167, 723);
             Controls.Add(tabControl1);
             Name = "frmMain";
             Text = "Saturn Teacher";
             Load += frmMain_Load;
+            Resize += frmMain_Resize;
             tabControl1.ResumeLayout(false);
+            tpAttendance.ResumeLayout(false);
+            gbReport.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)wVReport).EndInit();
+            groupBox2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dgAttendance).EndInit();
             tpStudents.ResumeLayout(false);
             dbStudents.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgStudent).EndInit();
+            groupBox5.ResumeLayout(false);
+            groupBox5.PerformLayout();
             tpRawData.ResumeLayout(false);
             groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvRawData).EndInit();
-            tpAttendance.ResumeLayout(false);
-            groupBox2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)dgAttendance).EndInit();
             tpLessonPlans.ResumeLayout(false);
             tpLessonPlans.PerformLayout();
             groupBox3.ResumeLayout(false);
@@ -345,7 +542,6 @@
         private TabPage tpStudents;
         private TabPage tpRawData;
         private GroupBox dbStudents;
-        private DataGridView dgStudent;
         private GroupBox groupBox1;
         private DataGridView dgvRawData;
         private TabPage tpAttendance;
@@ -365,5 +561,23 @@
         private Button btnLessonAdd;
         private Button btnLessonUpdate;
         private Button btnLessonRemove;
+        private DataGridView dgStudent;
+        private GroupBox gbReport;
+        private Microsoft.Web.WebView2.WinForms.WebView2 wVReport;
+        private GroupBox groupBox4;
+        private GroupBox groupBox5;
+        private Button btnStudentUpdate;
+        private Button btnStudentRemove;
+        private Button btnStudentAdd;
+        private GroupBox gbGroups;
+        private Label label8;
+        private TextBox txtClass;
+        private Label label7;
+        private TextBox txtBilsemNo;
+        private Label label9;
+        private TextBox txtUserName;
+        private Label label6;
+        private TextBox txtFullName;
+        private Label label5;
     }
 }

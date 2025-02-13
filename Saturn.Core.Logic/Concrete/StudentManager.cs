@@ -29,7 +29,7 @@ namespace Saturn.Core.Logic.Concrete
 
         public async Task Delete(Student student)
         {
-           _studentDataAccess.DeleteAsync(student);
+           await _studentDataAccess.DeleteAsync(student);
             await _studentDataAccess.SaveChangesAsync();
         }
 
@@ -40,7 +40,7 @@ namespace Saturn.Core.Logic.Concrete
 
         public async Task<IEnumerable<Student>> GetAll()
         {
-           return await _studentDataAccess.GetAllAsync();
+           return await _studentDataAccess.GetAllStudentWithGroupsAsync();
         }
 
         public async Task RemoteAdd(Student student)
@@ -48,14 +48,15 @@ namespace Saturn.Core.Logic.Concrete
             await _apiService.PostAsync<Student,string>(DomainData.Domain+"student/add", student);
         }
 
-        public Task RemoteDelete(Student student)
+        public async Task RemoteDelete(Student student)
         {
-            throw new NotImplementedException();
+            await _apiService.PostAsync<Student, string>(DomainData.Domain + "student/remove", student);
         }
 
-        public Task<IEnumerable<Student>> RemoteGetAll(Func<Student, bool> predicte)
+        public async Task<IEnumerable<Student>> RemoteGetAll(Func<Student, bool> predicte)
         {
-            throw new NotImplementedException();
+            var resault= await _apiService.GetAsync<List<Student>>(DomainData.Domain + "student/getall", null);
+            return resault.Where(predicte);
         }
 
         public async Task<IEnumerable<Student>> RemoteGetAll()
@@ -63,9 +64,9 @@ namespace Saturn.Core.Logic.Concrete
             return await _apiService.GetAsync<List<Student>>(DomainData.Domain + "student/getall", null);
         }
 
-        public Task RemoteUpdate(Student student)
+        public async Task RemoteUpdate(Student student)
         {
-            throw new NotImplementedException();
+            await _apiService.PostAsync<Student, string>(DomainData.Domain + "student/update", student);
         }
 
         public async Task Update(Student student)

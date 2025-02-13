@@ -21,5 +21,7 @@ namespace Saturn.Core.Logic.Abstract
         Task<IEnumerable<Lesson>> GetAllRemote();
         Task<Lesson> UpdateRemote(Lesson lessonTimeTable);
 
+       Task< List<Lesson>> GetAllGroups();
+
     }
 }

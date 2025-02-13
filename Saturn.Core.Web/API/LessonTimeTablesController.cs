@@ -32,5 +32,23 @@ namespace Saturn.Core.Web.API
             await _lessonTimeTableServices.Add(lesson);
             return Ok();
         }
+
+        [HttpPost("remove")]
+        public async Task<IActionResult> Remove([FromBody] Lesson lesson)
+        {
+            if (lesson == null)
+                return NotFound();
+            await _lessonTimeTableServices.Delete(lesson);
+            return Ok();
+        }
+
+        [HttpPost("update")]
+        public async Task<IActionResult> Update([FromBody] Lesson lesson)
+        {
+            if (lesson == null)
+                return NotFound();
+            await _lessonTimeTableServices.Update(lesson);
+            return Ok();
+        }
     }
 }
