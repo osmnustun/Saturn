@@ -56,6 +56,7 @@
             groupBox1 = new GroupBox();
             dgvRawData = new DataGridView();
             tpLessonPlans = new TabPage();
+            groupBox6 = new GroupBox();
             btnLessonUpdate = new Button();
             btnLessonRemove = new Button();
             btnLessonAdd = new Button();
@@ -83,6 +84,7 @@
             groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvRawData).BeginInit();
             tpLessonPlans.SuspendLayout();
+            groupBox6.SuspendLayout();
             groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgLessonPlans).BeginInit();
             SuspendLayout();
@@ -352,10 +354,10 @@
             // groupBox1
             // 
             groupBox1.Controls.Add(dgvRawData);
-            groupBox1.Dock = DockStyle.Left;
+            groupBox1.Dock = DockStyle.Fill;
             groupBox1.Location = new Point(3, 3);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(614, 689);
+            groupBox1.Size = new Size(1153, 689);
             groupBox1.TabIndex = 1;
             groupBox1.TabStop = false;
             // 
@@ -368,22 +370,12 @@
             dgvRawData.Location = new Point(3, 19);
             dgvRawData.Name = "dgvRawData";
             dgvRawData.ReadOnly = true;
-            dgvRawData.Size = new Size(608, 667);
+            dgvRawData.Size = new Size(1147, 667);
             dgvRawData.TabIndex = 0;
             // 
             // tpLessonPlans
             // 
-            tpLessonPlans.Controls.Add(btnLessonUpdate);
-            tpLessonPlans.Controls.Add(btnLessonRemove);
-            tpLessonPlans.Controls.Add(btnLessonAdd);
-            tpLessonPlans.Controls.Add(cmbDay);
-            tpLessonPlans.Controls.Add(label4);
-            tpLessonPlans.Controls.Add(txtEndTime);
-            tpLessonPlans.Controls.Add(label3);
-            tpLessonPlans.Controls.Add(txtStartTime);
-            tpLessonPlans.Controls.Add(label2);
-            tpLessonPlans.Controls.Add(label1);
-            tpLessonPlans.Controls.Add(txtLessonName);
+            tpLessonPlans.Controls.Add(groupBox6);
             tpLessonPlans.Controls.Add(groupBox3);
             tpLessonPlans.Location = new Point(4, 24);
             tpLessonPlans.Name = "tpLessonPlans";
@@ -393,106 +385,126 @@
             tpLessonPlans.Text = "Ders Programı";
             tpLessonPlans.UseVisualStyleBackColor = true;
             // 
+            // groupBox6
+            // 
+            groupBox6.Controls.Add(btnLessonUpdate);
+            groupBox6.Controls.Add(btnLessonRemove);
+            groupBox6.Controls.Add(btnLessonAdd);
+            groupBox6.Controls.Add(cmbDay);
+            groupBox6.Controls.Add(label4);
+            groupBox6.Controls.Add(txtEndTime);
+            groupBox6.Controls.Add(label3);
+            groupBox6.Controls.Add(txtStartTime);
+            groupBox6.Controls.Add(label2);
+            groupBox6.Controls.Add(label1);
+            groupBox6.Controls.Add(txtLessonName);
+            groupBox6.Dock = DockStyle.Right;
+            groupBox6.Location = new Point(605, 3);
+            groupBox6.Name = "groupBox6";
+            groupBox6.Size = new Size(551, 689);
+            groupBox6.TabIndex = 2;
+            groupBox6.TabStop = false;
+            // 
             // btnLessonUpdate
             // 
-            btnLessonUpdate.Location = new Point(653, 292);
+            btnLessonUpdate.Location = new Point(87, 302);
             btnLessonUpdate.Name = "btnLessonUpdate";
             btnLessonUpdate.Size = new Size(393, 23);
-            btnLessonUpdate.TabIndex = 6;
+            btnLessonUpdate.TabIndex = 17;
             btnLessonUpdate.Text = "GÜNCELLE";
             btnLessonUpdate.UseVisualStyleBackColor = true;
             // 
             // btnLessonRemove
             // 
-            btnLessonRemove.Location = new Point(653, 263);
+            btnLessonRemove.Location = new Point(87, 273);
             btnLessonRemove.Name = "btnLessonRemove";
             btnLessonRemove.Size = new Size(393, 23);
-            btnLessonRemove.TabIndex = 5;
+            btnLessonRemove.TabIndex = 16;
             btnLessonRemove.Text = "SİL";
             btnLessonRemove.UseVisualStyleBackColor = true;
             // 
             // btnLessonAdd
             // 
-            btnLessonAdd.Location = new Point(653, 234);
+            btnLessonAdd.Location = new Point(87, 244);
             btnLessonAdd.Name = "btnLessonAdd";
             btnLessonAdd.Size = new Size(393, 23);
-            btnLessonAdd.TabIndex = 4;
+            btnLessonAdd.TabIndex = 14;
             btnLessonAdd.Text = "EKLE";
             btnLessonAdd.UseVisualStyleBackColor = true;
-            btnLessonAdd.Click += btnLessonAdd_Click;
+            btnLessonAdd.Click += btnLessonAdd_Click_1;
             // 
             // cmbDay
             // 
             cmbDay.FormattingEnabled = true;
-            cmbDay.Location = new Point(779, 87);
+            cmbDay.Location = new Point(213, 97);
             cmbDay.Name = "cmbDay";
             cmbDay.Size = new Size(267, 23);
-            cmbDay.TabIndex = 4;
+            cmbDay.TabIndex = 15;
             // 
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(653, 179);
+            label4.Location = new Point(87, 189);
             label4.Name = "label4";
             label4.Size = new Size(73, 15);
-            label4.TabIndex = 3;
+            label4.TabIndex = 9;
             label4.Text = "BİTİŞ SAATİ :";
             // 
             // txtEndTime
             // 
-            txtEndTime.Location = new Point(779, 171);
+            txtEndTime.Location = new Point(213, 181);
             txtEndTime.Name = "txtEndTime";
             txtEndTime.Size = new Size(267, 23);
-            txtEndTime.TabIndex = 3;
+            txtEndTime.TabIndex = 10;
             // 
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(653, 137);
+            label3.Location = new Point(87, 147);
             label3.Name = "label3";
             label3.Size = new Size(101, 15);
-            label3.TabIndex = 3;
+            label3.TabIndex = 11;
             label3.Text = "BAŞLAMA SAATİ :";
             // 
             // txtStartTime
             // 
-            txtStartTime.Location = new Point(779, 129);
+            txtStartTime.Location = new Point(213, 139);
             txtStartTime.Name = "txtStartTime";
             txtStartTime.Size = new Size(267, 23);
-            txtStartTime.TabIndex = 2;
+            txtStartTime.TabIndex = 8;
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(653, 95);
+            label2.Location = new Point(87, 105);
             label2.Name = "label2";
             label2.Size = new Size(46, 15);
-            label2.TabIndex = 3;
+            label2.TabIndex = 12;
             label2.Text = "GÜNÜ :";
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(653, 53);
+            label1.Location = new Point(87, 63);
             label1.Name = "label1";
             label1.Size = new Size(62, 15);
-            label1.TabIndex = 3;
+            label1.TabIndex = 13;
             label1.Text = "DERS ADI :";
             // 
             // txtLessonName
             // 
-            txtLessonName.Location = new Point(779, 45);
+            txtLessonName.Location = new Point(213, 55);
             txtLessonName.Name = "txtLessonName";
             txtLessonName.Size = new Size(267, 23);
-            txtLessonName.TabIndex = 0;
+            txtLessonName.TabIndex = 7;
             // 
             // groupBox3
             // 
             groupBox3.Controls.Add(dgLessonPlans);
-            groupBox3.Dock = DockStyle.Left;
+            groupBox3.Dock = DockStyle.Fill;
             groupBox3.Location = new Point(3, 3);
             groupBox3.Name = "groupBox3";
-            groupBox3.Size = new Size(614, 689);
+            groupBox3.Size = new Size(1153, 689);
             groupBox3.TabIndex = 1;
             groupBox3.TabStop = false;
             // 
@@ -502,7 +514,7 @@
             dgLessonPlans.Dock = DockStyle.Fill;
             dgLessonPlans.Location = new Point(3, 19);
             dgLessonPlans.Name = "dgLessonPlans";
-            dgLessonPlans.Size = new Size(608, 667);
+            dgLessonPlans.Size = new Size(1147, 667);
             dgLessonPlans.TabIndex = 0;
             // 
             // frmMain
@@ -530,7 +542,8 @@
             groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvRawData).EndInit();
             tpLessonPlans.ResumeLayout(false);
-            tpLessonPlans.PerformLayout();
+            groupBox6.ResumeLayout(false);
+            groupBox6.PerformLayout();
             groupBox3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgLessonPlans).EndInit();
             ResumeLayout(false);
@@ -550,17 +563,6 @@
         private TabPage tpLessonPlans;
         private GroupBox groupBox3;
         private DataGridView dgLessonPlans;
-        private ComboBox cmbDay;
-        private Label label4;
-        private TextBox txtEndTime;
-        private Label label3;
-        private TextBox txtStartTime;
-        private Label label2;
-        private Label label1;
-        private TextBox txtLessonName;
-        private Button btnLessonAdd;
-        private Button btnLessonUpdate;
-        private Button btnLessonRemove;
         private DataGridView dgStudent;
         private GroupBox gbReport;
         private Microsoft.Web.WebView2.WinForms.WebView2 wVReport;
@@ -579,5 +581,17 @@
         private Label label6;
         private TextBox txtFullName;
         private Label label5;
+        private GroupBox groupBox6;
+        private Button btnLessonUpdate;
+        private Button btnLessonRemove;
+        private Button btnLessonAdd;
+        private ComboBox cmbDay;
+        private Label label4;
+        private TextBox txtEndTime;
+        private Label label3;
+        private TextBox txtStartTime;
+        private Label label2;
+        private Label label1;
+        private TextBox txtLessonName;
     }
 }

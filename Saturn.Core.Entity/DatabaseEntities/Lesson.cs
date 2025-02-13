@@ -25,7 +25,7 @@ namespace Saturn.Core.Entity.DatabaseEntities
         public string? StartTime { get => startTime; set => startTime = value; }
 
 
-        public  List<StudentsLessons>? Students { get; set; }
+        //public  List<StudentsLessons>? Students { get; set; }
         public void Clear()
         {
             // Tüm özellikleri temizle

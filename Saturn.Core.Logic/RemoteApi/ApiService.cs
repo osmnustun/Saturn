@@ -19,7 +19,13 @@ namespace Saturn.Core.Logic.RemoteApi
         // POST isteği gönderme
         public async Task<TResponse> PostAsync<TRequest, TResponse>(string url, TRequest requestData)
         {
-            var jsonContent = JsonConvert.SerializeObject(requestData);
+            var settings = new JsonSerializerSettings
+            {
+                // Döngüsel referansları yok say
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+             
+            };
+            var jsonContent = JsonConvert.SerializeObject(requestData,settings);
             var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
 
             var response = await _httpClient.PostAsync(url, content);

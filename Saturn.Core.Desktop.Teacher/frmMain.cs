@@ -109,6 +109,7 @@ namespace Saturn.Core.Desktop.Teacher
         }
         void GetStudentFromDatagrid()
         {
+            student.Clear();
             student.StudentId = Convert.ToInt32(dgStudent.CurrentRow.Cells[0].Value);
             student.BilsemNo = dgStudent.CurrentRow.Cells[1].Value == null ? "" : dgStudent.CurrentRow.Cells[1].Value.ToString();
             student.Username = dgStudent.CurrentRow.Cells[2].Value.ToString();
@@ -210,6 +211,11 @@ namespace Saturn.Core.Desktop.Teacher
             student.Groups = (List<StudentsLessons>?)GetStudentGroupsFromCheckBox();
             await _studentService.RemoteUpdate(student);
             dgStudent.DataSource = await _studentService.RemoteGetAll();
+        }
+
+        private async void btnLessonAdd_Click_1(object sender, EventArgs e)
+        {
+           await  _lessonTimeTableServices.AddRemote(lesson);
         }
     }
 }
