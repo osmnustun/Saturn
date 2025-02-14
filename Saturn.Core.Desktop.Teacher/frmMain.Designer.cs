@@ -119,9 +119,9 @@
             // 
             gbReport.Controls.Add(wVReport);
             gbReport.Dock = DockStyle.Fill;
-            gbReport.Location = new Point(361, 3);
+            gbReport.Location = new Point(559, 3);
             gbReport.Name = "gbReport";
-            gbReport.Size = new Size(527, 689);
+            gbReport.Size = new Size(329, 689);
             gbReport.TabIndex = 2;
             gbReport.TabStop = false;
             gbReport.Text = "Rapor";
@@ -134,7 +134,7 @@
             wVReport.Dock = DockStyle.Fill;
             wVReport.Location = new Point(3, 19);
             wVReport.Name = "wVReport";
-            wVReport.Size = new Size(521, 667);
+            wVReport.Size = new Size(323, 667);
             wVReport.TabIndex = 2;
             wVReport.ZoomFactor = 1D;
             // 
@@ -144,7 +144,7 @@
             groupBox2.Dock = DockStyle.Left;
             groupBox2.Location = new Point(3, 3);
             groupBox2.Name = "groupBox2";
-            groupBox2.Size = new Size(358, 689);
+            groupBox2.Size = new Size(556, 689);
             groupBox2.TabIndex = 1;
             groupBox2.TabStop = false;
             groupBox2.Text = "Yoklama Listesi";
@@ -153,13 +153,15 @@
             // 
             dgAttendance.AllowUserToAddRows = false;
             dgAttendance.AllowUserToDeleteRows = false;
+            dgAttendance.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgAttendance.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgAttendance.Dock = DockStyle.Fill;
             dgAttendance.Location = new Point(3, 19);
             dgAttendance.Name = "dgAttendance";
             dgAttendance.ReadOnly = true;
-            dgAttendance.Size = new Size(352, 667);
+            dgAttendance.Size = new Size(550, 667);
             dgAttendance.TabIndex = 0;
+            dgAttendance.CellMouseClick += dgAttendance_CellMouseClick;
             // 
             // groupBox4
             // 

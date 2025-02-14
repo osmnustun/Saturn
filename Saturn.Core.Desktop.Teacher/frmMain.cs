@@ -1,6 +1,7 @@
 using Saturn.Core.Entity.DatabaseEntities;
 using Saturn.Core.Logic.Abstract;
 using Saturn.Core.Logic.Report;
+using Saturn.Core.Logic.Tools;
 using System.Collections.Generic;
 
 namespace Saturn.Core.Desktop.Teacher
@@ -14,7 +15,8 @@ namespace Saturn.Core.Desktop.Teacher
         private readonly ReportTools _reportTools;
         Student student = new Student();
         Lesson lesson = new Lesson();
-
+        DateTime AttendanceDate;
+        List<AttendanceRaw> attendanceRaws= new List<AttendanceRaw>();
         public frmMain(IStudentService studentService, IAttendanceRawService attendanceRawService, ILessonTimeTableServices lessonTimeTableServices, ReportTools reportTools)
         {
             InitializeComponent();
@@ -26,17 +28,46 @@ namespace Saturn.Core.Desktop.Teacher
 
         private async void frmMain_Load(object sender, EventArgs e)
         {
+            await wVReport.EnsureCoreWebView2Async(null);
             ComboBoxFill();
             dgStudent.DataSource = await _studentService.RemoteGetAll();
-            var attendanceRaws = await _attendanceRawService.GetAllRemote();
+            attendanceRaws = (List<AttendanceRaw>)await _attendanceRawService.GetAllRemote();
             dgvRawData.DataSource = attendanceRaws;
             dgLessonPlans.DataSource = await _lessonTimeTableServices.GetAllRemote();
             dgLessonPlans.CellClick += dgvLessonPlans_CellClick;
             dgvLessonPlans_HeaderText();
             GetGroups();
-            var reportPath = _reportTools.GeneratePdfReport<AttendanceRaw>(attendanceRaws, ["Id", "username", "FullName", "PcName"]);
+            var reportPath = _reportTools.GeneratePdfReport<AttendanceRaw>(new List<AttendanceRaw>(), ["Id", "Username", "FullName", "PcName"]);
             wVReport.Source = new Uri(reportPath);
+            AttendanceInitializing();
         }
+
+        private void AttendanceInitializing()
+        {
+            var st = new DateTime(2025, 2, 4);
+            var et = new DateTime(2025, 6, 19);
+            var liste = new List<Attendance>();
+            List<DayOfWeek> dayOfWeeks = new List<DayOfWeek>();
+            dayOfWeeks.Add(DayOfWeek.Monday);
+            dayOfWeeks.Add(DayOfWeek.Sunday);
+
+            foreach (var item in TimeTools.GetDatesBetween(st, et, dayOfWeeks))
+            {
+                var count = attendanceRaws.Where(x => x.AttendanceTime.ToShortDateString() == item.ToShortDateString()).DistinctBy(x => x.Username).Count();
+                liste.Add(new Attendance
+                {
+                    Date = item,
+                    StudentCount = count
+                });
+            }
+           
+            dgAttendance.DataSource = liste;
+            dgAttendance.Columns[0].Visible = false;
+            dgAttendance.Columns[1].HeaderText = "Tarih";
+            dgAttendance.Columns[2].Visible = false;
+            dgAttendance.Columns[3].HeaderText = "Öðrenci Sayýsý";
+        }
+
         private async void btnLessonAdd_Click(object sender, EventArgs e)
         {
             var Lesson = new Lesson();
@@ -170,6 +201,7 @@ namespace Saturn.Core.Desktop.Teacher
         private void frmMain_Resize(object sender, EventArgs e)
         {
             //gbReport.Width = this.Width - 700;
+            wVReport.Reload();
         }
 
         private void btnStudentAdd_Click(object sender, EventArgs e)
@@ -215,7 +247,21 @@ namespace Saturn.Core.Desktop.Teacher
 
         private async void btnLessonAdd_Click_1(object sender, EventArgs e)
         {
-           await  _lessonTimeTableServices.AddRemote(lesson);
+            await _lessonTimeTableServices.AddRemote(lesson);
+        }
+
+        private void dgAttendance_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if(dgAttendance.CurrentRow != null)
+            {
+                AttendanceDate = (DateTime)dgAttendance.CurrentRow.Cells[2].Value;
+                var resault = attendanceRaws.Where(x => x.AttendanceTime.ToShortDateString() ==AttendanceDate.ToShortDateString() ).DistinctBy(x=>x.Username).ToList();
+               var reportPath= _reportTools.GeneratePdfReport<AttendanceRaw>(resault, [ "FullName", "PcName", "GetDateString"]);
+                wVReport.Source = new Uri(reportPath);
+                //wVReport.Reload();
+            }
+               
+            
         }
     }
 }

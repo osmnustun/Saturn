@@ -21,7 +21,7 @@ namespace Saturn.Core.Web.API
         {
             if (Attendance == null)
                 return NotFound();
-            Attendance.AttendanceTime = DateTime.Now;   
+           // Attendance.AttendanceTime = DateTime.Now;   
             await _attendanceRawService.Add(Attendance);
             return Ok();
 

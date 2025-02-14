@@ -48,6 +48,11 @@ namespace Saturn.Core.Logic.Concrete
             return resault;
         }
 
+        public async Task RemoteAdd(AttendanceRaw attendance)
+        {
+            await _apiService.PostAsync<AttendanceRaw, AttendanceRaw>(DomainData.Domain + "attendance/attendanceraw", attendance);
+        }
+
         public async Task Update(AttendanceRaw attendanceRaw)
         {
             _attendanceDataAccess.UpdateAsync(attendanceRaw);
