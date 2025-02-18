@@ -24,6 +24,7 @@ namespace Saturn.Core.Entity.DatabaseEntities
         public DateTime Date { get; set; }
 
         public int StudentCount { get; set; }
+        public string LessonNames { get; set; }
 
 
     }

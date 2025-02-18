@@ -10,9 +10,13 @@ namespace Saturn.Core.TestConsole
     internal class Program
     {
         readonly IAttendanceRawService _attendanceRawService;
-        public Program(IAttendanceRawService attendanceRawService)
+        readonly IStudentService _studentService;
+        readonly ILessonTimeTableServices _lessonTimeTableServices;
+        public Program(IAttendanceRawService attendanceRawService, IStudentService studentService, ILessonTimeTableServices lessonTimeTableServices)
         {
             _attendanceRawService = attendanceRawService;
+            _studentService = studentService;
+            _lessonTimeTableServices = lessonTimeTableServices;
         }
         static async Task Main(string[] args)
         {
@@ -37,19 +41,27 @@ namespace Saturn.Core.TestConsole
 
         private async Task Run()
         {
-            var faker = new Faker<AttendanceRaw>()
-                  .RuleFor(x => x.PcName, f => f.Name.JobTitle())
-                  .RuleFor(x => x.Username, f => f.Internet.UserName())
-                  .RuleFor(x => x.FullName, f => f.Name.FullName())
-                  .RuleFor(x => x.AttendanceTime, f => f.Date.Past(1,new DateTime(2025,12,31)));
-            var liste = faker.Generate(20000);
-            foreach (var item in liste)
+            Random ran = new Random();
+            var students = await _studentService.RemoteGetAll();
+            var lessons = await _lessonTimeTableServices.GetAllRemote();
+            foreach (var student in students)
             {
-               await _attendanceRawService.RemoteAdd(item);
-                Console.WriteLine($"{item.Username}     {item.AttendanceTime.ToLongDateString()} eklendi");
+                //student.Groups = lessons.OrderBy(x => ran.Next()).Take(ran.Next(1,3))
+                //    .Select(lesson => new StudentsLessons
+                //    {
+                //        StudentId = student.StudentId,
+                //        LessonId = lesson.LessonId,
+                //        Lesson = lesson
+                //    }).ToList();
 
+                student.BilsemNo = ran.Next(10000, 99999).ToString();
+                await _studentService.RemoteUpdate(student);
+
+                Console.WriteLine($"Öğrenci {student.FullName} güncellendi");
             }
 
+
+            
         }
     }
 }

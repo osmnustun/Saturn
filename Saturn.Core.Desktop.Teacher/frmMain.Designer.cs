@@ -377,8 +377,8 @@
             // 
             // tpLessonPlans
             // 
-            tpLessonPlans.Controls.Add(groupBox6);
             tpLessonPlans.Controls.Add(groupBox3);
+            tpLessonPlans.Controls.Add(groupBox6);
             tpLessonPlans.Location = new Point(4, 24);
             tpLessonPlans.Name = "tpLessonPlans";
             tpLessonPlans.Padding = new Padding(3);
@@ -415,6 +415,7 @@
             btnLessonUpdate.TabIndex = 17;
             btnLessonUpdate.Text = "GÜNCELLE";
             btnLessonUpdate.UseVisualStyleBackColor = true;
+            btnLessonUpdate.Click += btnLessonUpdate_Click;
             // 
             // btnLessonRemove
             // 
@@ -424,6 +425,7 @@
             btnLessonRemove.TabIndex = 16;
             btnLessonRemove.Text = "SİL";
             btnLessonRemove.UseVisualStyleBackColor = true;
+            btnLessonRemove.Click += btnLessonRemove_Click;
             // 
             // btnLessonAdd
             // 
@@ -433,7 +435,7 @@
             btnLessonAdd.TabIndex = 14;
             btnLessonAdd.Text = "EKLE";
             btnLessonAdd.UseVisualStyleBackColor = true;
-            btnLessonAdd.Click += btnLessonAdd_Click_1;
+            btnLessonAdd.Click += btnLessonAdd_Click;
             // 
             // cmbDay
             // 
@@ -506,17 +508,18 @@
             groupBox3.Dock = DockStyle.Fill;
             groupBox3.Location = new Point(3, 3);
             groupBox3.Name = "groupBox3";
-            groupBox3.Size = new Size(1153, 689);
+            groupBox3.Size = new Size(602, 689);
             groupBox3.TabIndex = 1;
             groupBox3.TabStop = false;
             // 
             // dgLessonPlans
             // 
+            dgLessonPlans.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgLessonPlans.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgLessonPlans.Dock = DockStyle.Fill;
             dgLessonPlans.Location = new Point(3, 19);
             dgLessonPlans.Name = "dgLessonPlans";
-            dgLessonPlans.Size = new Size(1147, 667);
+            dgLessonPlans.Size = new Size(596, 667);
             dgLessonPlans.TabIndex = 0;
             // 
             // frmMain

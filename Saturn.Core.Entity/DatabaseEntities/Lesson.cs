@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Saturn.Core.Entity.DatabaseEntities
@@ -17,14 +20,25 @@ namespace Saturn.Core.Entity.DatabaseEntities
         public int LessonId { get; set; }
         public string? LessonName { get; set; }
         public DayOfWeek? DayOfLesson { get; set; }
-       
+        [NotMapped]
+        public string? DayOfLessonString
+        {
+            get
+            {
+                if(DayOfLesson == null)
+                    return null;
+                CultureInfo ci = new CultureInfo("tr-TR");
+                return ci.DateTimeFormat.GetDayName((DayOfWeek)DayOfLesson);
+            }
+        }
+        public string? StartTime { get => startTime; set => startTime = value; }
         public string? EndTime { get; set; }     
 
         public User? Teacher { get; set; }
         public Guid? UserId { get; set; }
-        public string? StartTime { get => startTime; set => startTime = value; }
 
 
+        //[JsonIgnore]
         //public  List<StudentsLessons>? Students { get; set; }
         public void Clear()
         {

@@ -71,8 +71,8 @@ namespace Saturn.Core.Logic.Concrete
 
         public async Task Update(Student student)
         {
-            _studentDataAccess.UpdateAsync(student);
-            await _studentDataAccess.SaveChangesAsync();    
+           await _studentDataAccess.UpdateStudentWithGroups(student);
+            
         }
     }
 }

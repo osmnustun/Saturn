@@ -55,7 +55,7 @@ namespace Saturn.Core.DataAccess.Concrete
 
         public async Task<TEntity> UpdateAsync(TEntity entity)
         {
-            _context.Update(entity); ;
+            _context.Update(entity); 
             return entity;
         }
     }

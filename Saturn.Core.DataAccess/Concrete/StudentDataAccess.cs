@@ -26,5 +26,18 @@ namespace Saturn.Core.DataAccess.Concrete
 
             return resault;
         }
+
+        public async Task UpdateStudentWithGroups(Student student)
+        {
+            using (var context = _context)
+            {
+                var st = context.Students
+                    .Include(x => x.Groups)
+                    .FirstOrDefault(x => x.StudentId == student.StudentId);
+
+                st.Groups = student.Groups;
+                await context.SaveChangesAsync();
+            }
+        }
     }
 }
