@@ -54,7 +54,8 @@ namespace Saturn.Net.Student
 
             // API adresi (değiştirmeniz gerekebilir)
             //string apiUrl = ReadApiUrlFromFile("api_url.txt");
-            string apiUrl = "http://www.saturn.edu/api/attendance/attendanceraw";
+            //string apiUrl = "http://www.saturn.edu/api/attendance/attendanceraw";
+            string apiUrl = "https://localhost:7059/api/attendance/attendanceraw";
 
             if (string.IsNullOrEmpty(apiUrl))
             {
