@@ -62,8 +62,8 @@ namespace Saturn.Core.Desktop.Teacher
         }
         private void AttendanceInitializing()
         {
-            var st = new DateTime(2025, 2, 4);
-            var et = new DateTime(2025, 6, 19);
+            var st = new DateTime(2025, 9, 8);
+            var et = new DateTime(2026, 1, 25);
             var liste = new List<Attendance>();
             List<DayOfWeek> dayOfWeeks = new List<DayOfWeek>();
             dayOfWeeks.Add(DayOfWeek.Monday);
