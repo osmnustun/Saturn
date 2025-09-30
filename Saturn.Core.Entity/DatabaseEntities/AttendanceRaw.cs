@@ -28,10 +28,7 @@ namespace Saturn.Core.Entity.DatabaseEntities
                 _getdatestring = AttendanceTime.ToString("d MMMM yyyy dddd HH:mm", culture);
                 return _getdatestring;
             }
-            set
-            {
-                _getdatestring = value;
-            }
+           
         }
     }
 }
