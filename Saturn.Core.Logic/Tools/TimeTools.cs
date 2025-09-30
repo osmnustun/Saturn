@@ -23,6 +23,21 @@ namespace Saturn.Core.Logic.Tools
             return dateList;
         }
 
+        public static List<DateTime> GetDatesBetween(DateTime start, DateTime end, DayOfWeek dayOfWeek)
+        {
+            List<DateTime> dateList = new List<DateTime>();
+
+            for (DateTime date = start; date <= end; date = date.AddDays(1))
+            {
+               if (date.DayOfWeek == dayOfWeek)
+                    dateList.Add(date);
+
+            }
+
+            return dateList;
+        }
+
+
         public static List<string> GetDatesBetweenTr(DateTime start, DateTime end)
         {
             CultureInfo culture = new CultureInfo("tr-TR"); // Türkçe format

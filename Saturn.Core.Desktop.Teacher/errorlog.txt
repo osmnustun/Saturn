@@ -1,0 +1,16 @@
+30.09.2025 02:15:36: System.UnauthorizedAccessException: Erişim engellendi. (0x80070005 (E_ACCESSDENIED))
+   at System.Runtime.InteropServices.Marshal.ThrowExceptionForHR(Int32 errorCode)
+   at Microsoft.Web.WebView2.Core.CoreWebView2Environment.CreateAsync(String browserExecutableFolder, String userDataFolder, CoreWebView2EnvironmentOptions options)
+   at Microsoft.Web.WebView2.WinForms.WebView2.InitCoreWebView2Async(CoreWebView2Environment environment, CoreWebView2ControllerOptions controllerOptions)
+   at Saturn.Core.Desktop.Teacher.frmMain.frmMain_Load(Object sender, EventArgs e) in C:\Users\osman\source\repos\Saturn\Saturn.Core.Desktop.Teacher\frmMain.cs:line 36
+   at System.Threading.Tasks.Task.<>c.<ThrowAsync>b__128_0(Object state)
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)
+30.09.2025 02:15:43: System.UnauthorizedAccessException: Erişim engellendi. (0x80070005 (E_ACCESSDENIED))
+   at System.Runtime.InteropServices.Marshal.ThrowExceptionForHR(Int32 errorCode)
+   at Microsoft.Web.WebView2.Core.CoreWebView2Environment.CreateAsync(String browserExecutableFolder, String userDataFolder, CoreWebView2EnvironmentOptions options)
+   at Microsoft.Web.WebView2.WinForms.WebView2.InitCoreWebView2Async(CoreWebView2Environment environment, CoreWebView2ControllerOptions controllerOptions)
+   at Saturn.Core.Desktop.Teacher.frmMain.frmMain_Load(Object sender, EventArgs e) in C:\Users\osman\source\repos\Saturn\Saturn.Core.Desktop.Teacher\frmMain.cs:line 36
+   at System.Threading.Tasks.Task.<>c.<ThrowAsync>b__128_0(Object state)
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)

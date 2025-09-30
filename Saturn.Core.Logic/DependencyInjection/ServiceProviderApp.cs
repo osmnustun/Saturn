@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Saturn.Core.DataAccess.Abstract;
 using Saturn.Core.DataAccess.Concrete;
 using Saturn.Core.Logic.Abstract;

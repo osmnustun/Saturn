@@ -36,8 +36,10 @@
             dgAttendance = new DataGridView();
             groupBox4 = new GroupBox();
             tpStudents = new TabPage();
+            webViewStudentReport = new Microsoft.Web.WebView2.WinForms.WebView2();
             dbStudents = new GroupBox();
             dgStudent = new DataGridView();
+            txtSearchStudent = new TextBox();
             groupBox5 = new GroupBox();
             btnStudentUpdate = new Button();
             btnStudentRemove = new Button();
@@ -56,6 +58,8 @@
             groupBox1 = new GroupBox();
             dgvRawData = new DataGridView();
             tpLessonPlans = new TabPage();
+            groupBox3 = new GroupBox();
+            dgLessonPlans = new DataGridView();
             groupBox6 = new GroupBox();
             btnLessonUpdate = new Button();
             btnLessonRemove = new Button();
@@ -68,8 +72,6 @@
             label2 = new Label();
             label1 = new Label();
             txtLessonName = new TextBox();
-            groupBox3 = new GroupBox();
-            dgLessonPlans = new DataGridView();
             tabControl1.SuspendLayout();
             tpAttendance.SuspendLayout();
             gbReport.SuspendLayout();
@@ -77,6 +79,7 @@
             groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgAttendance).BeginInit();
             tpStudents.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)webViewStudentReport).BeginInit();
             dbStudents.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgStudent).BeginInit();
             groupBox5.SuspendLayout();
@@ -84,9 +87,9 @@
             groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvRawData).BeginInit();
             tpLessonPlans.SuspendLayout();
-            groupBox6.SuspendLayout();
             groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgLessonPlans).BeginInit();
+            groupBox6.SuspendLayout();
             SuspendLayout();
             // 
             // tabControl1
@@ -175,6 +178,7 @@
             // 
             // tpStudents
             // 
+            tpStudents.Controls.Add(webViewStudentReport);
             tpStudents.Controls.Add(dbStudents);
             tpStudents.Controls.Add(groupBox5);
             tpStudents.Location = new Point(4, 24);
@@ -185,13 +189,26 @@
             tpStudents.Text = "Öğrenciler";
             tpStudents.UseVisualStyleBackColor = true;
             // 
+            // webViewStudentReport
+            // 
+            webViewStudentReport.AllowExternalDrop = true;
+            webViewStudentReport.CreationProperties = null;
+            webViewStudentReport.DefaultBackgroundColor = Color.White;
+            webViewStudentReport.Dock = DockStyle.Fill;
+            webViewStudentReport.Location = new Point(574, 3);
+            webViewStudentReport.Name = "webViewStudentReport";
+            webViewStudentReport.Size = new Size(129, 689);
+            webViewStudentReport.TabIndex = 2;
+            webViewStudentReport.ZoomFactor = 1D;
+            // 
             // dbStudents
             // 
             dbStudents.Controls.Add(dgStudent);
-            dbStudents.Dock = DockStyle.Fill;
+            dbStudents.Controls.Add(txtSearchStudent);
+            dbStudents.Dock = DockStyle.Left;
             dbStudents.Location = new Point(3, 3);
             dbStudents.Name = "dbStudents";
-            dbStudents.Size = new Size(602, 689);
+            dbStudents.Size = new Size(571, 689);
             dbStudents.TabIndex = 0;
             dbStudents.TabStop = false;
             // 
@@ -201,12 +218,22 @@
             dgStudent.AllowUserToDeleteRows = false;
             dgStudent.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgStudent.Dock = DockStyle.Fill;
-            dgStudent.Location = new Point(3, 19);
+            dgStudent.Location = new Point(3, 42);
             dgStudent.Name = "dgStudent";
             dgStudent.ReadOnly = true;
-            dgStudent.Size = new Size(596, 667);
+            dgStudent.Size = new Size(565, 644);
             dgStudent.TabIndex = 1;
             dgStudent.CellClick += dgStudent_CellClick;
+            // 
+            // txtSearchStudent
+            // 
+            txtSearchStudent.BackColor = SystemColors.Info;
+            txtSearchStudent.Dock = DockStyle.Top;
+            txtSearchStudent.Location = new Point(3, 19);
+            txtSearchStudent.Name = "txtSearchStudent";
+            txtSearchStudent.Size = new Size(565, 23);
+            txtSearchStudent.TabIndex = 2;
+            txtSearchStudent.TextChanged += txtSearchStudent_TextChanged;
             // 
             // groupBox5
             // 
@@ -224,15 +251,15 @@
             groupBox5.Controls.Add(txtFullName);
             groupBox5.Controls.Add(label5);
             groupBox5.Dock = DockStyle.Right;
-            groupBox5.Location = new Point(605, 3);
+            groupBox5.Location = new Point(703, 3);
             groupBox5.Name = "groupBox5";
-            groupBox5.Size = new Size(551, 689);
+            groupBox5.Size = new Size(453, 689);
             groupBox5.TabIndex = 1;
             groupBox5.TabStop = false;
             // 
             // btnStudentUpdate
             // 
-            btnStudentUpdate.Location = new Point(124, 583);
+            btnStudentUpdate.Location = new Point(53, 575);
             btnStudentUpdate.Name = "btnStudentUpdate";
             btnStudentUpdate.Size = new Size(371, 23);
             btnStudentUpdate.TabIndex = 20;
@@ -242,7 +269,7 @@
             // 
             // btnStudentRemove
             // 
-            btnStudentRemove.Location = new Point(124, 533);
+            btnStudentRemove.Location = new Point(53, 525);
             btnStudentRemove.Name = "btnStudentRemove";
             btnStudentRemove.Size = new Size(371, 23);
             btnStudentRemove.TabIndex = 21;
@@ -252,7 +279,7 @@
             // 
             // btnStudentAdd
             // 
-            btnStudentAdd.Location = new Point(124, 483);
+            btnStudentAdd.Location = new Point(53, 475);
             btnStudentAdd.Name = "btnStudentAdd";
             btnStudentAdd.Size = new Size(371, 23);
             btnStudentAdd.TabIndex = 22;
@@ -262,7 +289,7 @@
             // 
             // gbGroups
             // 
-            gbGroups.Location = new Point(214, 275);
+            gbGroups.Location = new Point(143, 267);
             gbGroups.Name = "gbGroups";
             gbGroups.Size = new Size(285, 150);
             gbGroups.TabIndex = 19;
@@ -272,7 +299,7 @@
             // label8
             // 
             label8.AutoSize = true;
-            label8.Location = new Point(86, 275);
+            label8.Location = new Point(15, 267);
             label8.Name = "label8";
             label8.Size = new Size(102, 15);
             label8.TabIndex = 18;
@@ -280,7 +307,7 @@
             // 
             // txtClass
             // 
-            txtClass.Location = new Point(210, 198);
+            txtClass.Location = new Point(139, 190);
             txtClass.Name = "txtClass";
             txtClass.Size = new Size(285, 23);
             txtClass.TabIndex = 17;
@@ -288,7 +315,7 @@
             // label7
             // 
             label7.AutoSize = true;
-            label7.Location = new Point(86, 201);
+            label7.Location = new Point(15, 193);
             label7.Name = "label7";
             label7.Size = new Size(43, 15);
             label7.TabIndex = 16;
@@ -296,7 +323,7 @@
             // 
             // txtBilsemNo
             // 
-            txtBilsemNo.Location = new Point(210, 104);
+            txtBilsemNo.Location = new Point(139, 96);
             txtBilsemNo.Name = "txtBilsemNo";
             txtBilsemNo.Size = new Size(285, 23);
             txtBilsemNo.TabIndex = 14;
@@ -304,7 +331,7 @@
             // label9
             // 
             label9.AutoSize = true;
-            label9.Location = new Point(86, 107);
+            label9.Location = new Point(15, 99);
             label9.Name = "label9";
             label9.Size = new Size(73, 15);
             label9.TabIndex = 12;
@@ -312,7 +339,7 @@
             // 
             // txtUserName
             // 
-            txtUserName.Location = new Point(210, 151);
+            txtUserName.Location = new Point(139, 143);
             txtUserName.Name = "txtUserName";
             txtUserName.Size = new Size(285, 23);
             txtUserName.TabIndex = 15;
@@ -320,7 +347,7 @@
             // label6
             // 
             label6.AutoSize = true;
-            label6.Location = new Point(86, 154);
+            label6.Location = new Point(15, 146);
             label6.Name = "label6";
             label6.Size = new Size(93, 15);
             label6.TabIndex = 13;
@@ -328,7 +355,7 @@
             // 
             // txtFullName
             // 
-            txtFullName.Location = new Point(210, 57);
+            txtFullName.Location = new Point(139, 49);
             txtFullName.Name = "txtFullName";
             txtFullName.Size = new Size(285, 23);
             txtFullName.TabIndex = 11;
@@ -336,7 +363,7 @@
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(86, 60);
+            label5.Location = new Point(15, 52);
             label5.Name = "label5";
             label5.Size = new Size(75, 15);
             label5.TabIndex = 10;
@@ -386,6 +413,26 @@
             tpLessonPlans.TabIndex = 3;
             tpLessonPlans.Text = "Ders Programı";
             tpLessonPlans.UseVisualStyleBackColor = true;
+            // 
+            // groupBox3
+            // 
+            groupBox3.Controls.Add(dgLessonPlans);
+            groupBox3.Dock = DockStyle.Fill;
+            groupBox3.Location = new Point(3, 3);
+            groupBox3.Name = "groupBox3";
+            groupBox3.Size = new Size(602, 689);
+            groupBox3.TabIndex = 1;
+            groupBox3.TabStop = false;
+            // 
+            // dgLessonPlans
+            // 
+            dgLessonPlans.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgLessonPlans.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgLessonPlans.Dock = DockStyle.Fill;
+            dgLessonPlans.Location = new Point(3, 19);
+            dgLessonPlans.Name = "dgLessonPlans";
+            dgLessonPlans.Size = new Size(596, 667);
+            dgLessonPlans.TabIndex = 0;
             // 
             // groupBox6
             // 
@@ -502,26 +549,6 @@
             txtLessonName.Size = new Size(267, 23);
             txtLessonName.TabIndex = 7;
             // 
-            // groupBox3
-            // 
-            groupBox3.Controls.Add(dgLessonPlans);
-            groupBox3.Dock = DockStyle.Fill;
-            groupBox3.Location = new Point(3, 3);
-            groupBox3.Name = "groupBox3";
-            groupBox3.Size = new Size(602, 689);
-            groupBox3.TabIndex = 1;
-            groupBox3.TabStop = false;
-            // 
-            // dgLessonPlans
-            // 
-            dgLessonPlans.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgLessonPlans.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgLessonPlans.Dock = DockStyle.Fill;
-            dgLessonPlans.Location = new Point(3, 19);
-            dgLessonPlans.Name = "dgLessonPlans";
-            dgLessonPlans.Size = new Size(596, 667);
-            dgLessonPlans.TabIndex = 0;
-            // 
             // frmMain
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -539,7 +566,9 @@
             groupBox2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgAttendance).EndInit();
             tpStudents.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)webViewStudentReport).EndInit();
             dbStudents.ResumeLayout(false);
+            dbStudents.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dgStudent).EndInit();
             groupBox5.ResumeLayout(false);
             groupBox5.PerformLayout();
@@ -547,10 +576,10 @@
             groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvRawData).EndInit();
             tpLessonPlans.ResumeLayout(false);
-            groupBox6.ResumeLayout(false);
-            groupBox6.PerformLayout();
             groupBox3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgLessonPlans).EndInit();
+            groupBox6.ResumeLayout(false);
+            groupBox6.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -598,5 +627,7 @@
         private Label label2;
         private Label label1;
         private TextBox txtLessonName;
+        private TextBox txtSearchStudent;
+        private Microsoft.Web.WebView2.WinForms.WebView2 webViewStudentReport;
     }
 }

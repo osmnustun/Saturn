@@ -7,6 +7,7 @@ using Saturn.Core.Logic.Report;
 using Saturn.Core.Logic.Tools;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Threading.Tasks;
 
 namespace Saturn.Core.Desktop.Teacher
 {
@@ -18,10 +19,13 @@ namespace Saturn.Core.Desktop.Teacher
         int LessonId;
         private readonly ReportTools _reportTools;
         Student student = new Student();
+        List<Student> students = new List<Student>();
         Lesson lesson = new Lesson();
         DateTime AttendanceDate;
         List<AttendanceRaw> attendanceRaws = new List<AttendanceRaw>();
         List<Lesson> lessonList = new List<Lesson>();
+        DateTime st;
+        DateTime et;
         public frmMain(IStudentService studentService, IAttendanceRawService attendanceRawService, ILessonTimeTableServices lessonTimeTableServices, ReportTools reportTools)
         {
             InitializeComponent();
@@ -39,7 +43,7 @@ namespace Saturn.Core.Desktop.Teacher
             attendanceRaws = (List<AttendanceRaw>)await _attendanceRawService.GetAllRemote();
             dgvRawData.DataSource = attendanceRaws;
             lessonList = (List<Lesson>)await _lessonTimeTableServices.GetAllRemote();
-            dgLessonPlans.DataSource =lessonList;
+            dgLessonPlans.DataSource = lessonList;
             dgLessonPlans.CellClick += dgvLessonPlans_CellClick;
             dgvLessonPlans_HeaderText();
             GetGroups();
@@ -48,7 +52,7 @@ namespace Saturn.Core.Desktop.Teacher
             AttendanceInitializing();
         }
 
-        
+
 
         #region Functions
 
@@ -62,8 +66,8 @@ namespace Saturn.Core.Desktop.Teacher
         }
         private void AttendanceInitializing()
         {
-            var st = new DateTime(2025, 2, 4);
-            var et = new DateTime(2025, 6, 19);
+             st = new DateTime(2025, 9, 9);
+             et = new DateTime(2026, 2, 19);
             var liste = new List<Attendance>();
             List<DayOfWeek> dayOfWeeks = new List<DayOfWeek>();
             dayOfWeeks.Add(DayOfWeek.Monday);
@@ -97,11 +101,11 @@ namespace Saturn.Core.Desktop.Teacher
             txtStartTime.Text = "";
             txtEndTime.Text = "";
         }
-    
+
         void ComboBoxFill()
         {
-           //cmbDay.DataSource = Enum.GetValues(typeof(DayOfWeek));            
-          cmbDay.DataSource = DateNames.DayOfWeekNames.ToList();
+            //cmbDay.DataSource = Enum.GetValues(typeof(DayOfWeek));            
+            cmbDay.DataSource = DateNames.DayOfWeekNames.ToList();
             cmbDay.DisplayMember = "Value";
             cmbDay.ValueMember = "Key";
 
@@ -110,8 +114,8 @@ namespace Saturn.Core.Desktop.Teacher
         }
         void dgvLessonPlans_HeaderText()
         {
-            string[] headerText = {"Id", "Ders Adý", "Gün-System","Ders Günü", "Baþlama Saati", "Bitiþ Saati","Öðretmen","Kullanýcý Id" };
-            bool[] visible =      { false, true,        false,       true,       true,               true,       false,       false };
+            string[] headerText = { "Id", "Ders Adý", "Gün-System", "Ders Günü", "Baþlama Saati", "Bitiþ Saati", "Öðretmen", "Kullanýcý Id" };
+            bool[] visible = { false, true, false, true, true, true, false, false };
             foreach (DataGridViewColumn item in dgLessonPlans.Columns)
             {
                 item.HeaderText = headerText[item.Index];
@@ -223,6 +227,25 @@ namespace Saturn.Core.Desktop.Teacher
         private void dgStudent_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             GetStudentFromDatagrid();
+            GetStudentAttendanceReport();
+        }
+
+        private void GetStudentAttendanceReport()
+        {
+            //var dateListForLesson = new List<DateTime>();
+            var attendanceList = new List<(string DersAdi, DateTime Tarih, bool Yoklama)>();
+            var studentAttendance = attendanceRaws.Where(x => x.Username == student.Username).ToList();
+            foreach (var lesson in student.Groups)
+            {
+                foreach(var item in TimeTools.GetDatesBetween(st, et, (DayOfWeek)lesson.Lesson.DayOfLesson))
+                {
+                   var yoklama = studentAttendance.Any(x => x.AttendanceTime.ToShortDateString() == item.ToShortDateString());
+                    attendanceList.Add((lesson.Lesson.LessonName, item, yoklama));
+                }
+            }
+
+           var reportPath= _reportTools.CreateStudentAttendanceReport(attendanceList, $"{student.FullName}-Yoklama Raporu");
+            webViewStudentReport.Source = new Uri(reportPath);
         }
 
         private async void btnStudentRemove_Click(object sender, EventArgs e)
@@ -246,6 +269,7 @@ namespace Saturn.Core.Desktop.Teacher
 
         private async void btnStudentUpdate_Click(object sender, EventArgs e)
         {
+
             student.Groups = (List<StudentsLessons>?)GetStudentGroupsFromCheckBox();
             Get_Student_Txt();
             await _studentService.RemoteUpdate(student);
@@ -259,7 +283,7 @@ namespace Saturn.Core.Desktop.Teacher
             await _lessonTimeTableServices.AddRemote(lesson);
             dgLessonPlans.DataSource = await _lessonTimeTableServices.GetAllRemote();
             ClearLesson();
-           
+
         }
 
         private async void dgAttendance_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
@@ -269,32 +293,32 @@ namespace Saturn.Core.Desktop.Teacher
                 CultureInfo ci = new CultureInfo("tr-TR");
                 AttendanceDate = (DateTime)dgAttendance.CurrentRow.Cells[2].Value;
                 var attendanceList = attendanceRaws.Where(x => x.AttendanceTime.ToShortDateString() == AttendanceDate.ToShortDateString()).DistinctBy(x => x.Username).ToList();
-                var studentList= await _studentService.RemoteGetAll();
+                var studentList = await _studentService.RemoteGetAll();
                 var studentLessonList = studentList.SelectMany(x => x.Groups).ToList();
                 var lessonTableList = await _lessonTimeTableServices.GetAllRemote();
-                var resault= new List<List<AttendanceReport>>();
+                var resault = new List<List<AttendanceReport>>();
                 foreach (var lesson in lessonTableList)
                 {
-                    var r= attendanceList.Where(x=>x.AttendanceTime.DayOfWeek== lesson.DayOfLesson 
-                    && TimeSpan.Parse(x.AttendanceTime.ToString("HH:mm"))>TimeSpan.Parse(lesson.StartTime)
+                    var r = attendanceList.Where(x => x.AttendanceTime.DayOfWeek == lesson.DayOfLesson
+                    && TimeSpan.Parse(x.AttendanceTime.ToString("HH:mm")) > TimeSpan.Parse(lesson.StartTime)
                     && TimeSpan.Parse(x.AttendanceTime.ToString("HH:mm")) < TimeSpan.Parse(lesson.EndTime)).ToList();
-                    if(r.Count > 0)
+                    if (r.Count > 0)
                     {
                         var attendanceReport = new List<AttendanceReport>();
                         foreach (var attendanceRaw in r)
                         {
-                           
-                           attendanceReport.Add(new AttendanceReport
+
+                            attendanceReport.Add(new AttendanceReport
                             {
                                 FullName = attendanceRaw.FullName,
                                 PcName = attendanceRaw.PcName,
                                 BilsemNo = studentList.FirstOrDefault(x => x.Username == attendanceRaw.Username)?.BilsemNo,
-                                AttendanceDateTime = attendanceRaw.AttendanceTime.ToString("dd MMM yyyy ddd HH:mm",ci),
+                                AttendanceDateTime = attendanceRaw.AttendanceTime.ToString("dd MMM yyyy ddd HH:mm", ci),
                                 username = attendanceRaw.Username
 
-                           });
+                            });
                         }
-                        var lessonStudents=studentList.Where(studentList => studentList.Groups.Any(x => x.LessonId == lesson.LessonId)).ToList();
+                        var lessonStudents = studentList.Where(studentList => studentList.Groups.Any(x => x.LessonId == lesson.LessonId)).ToList();
                         foreach (var student in lessonStudents)
                         {
                             if (!attendanceReport.Any(x => x.username == student.Username))
@@ -311,13 +335,13 @@ namespace Saturn.Core.Desktop.Teacher
 
                         resault.Add(attendanceReport);
                     }
-                        
+
 
                 }
 
                 //var reportPath = _reportTools.GeneratePdfReport<AttendanceRaw>(attendanceList, ["FullName", "PcName", "GetDateString"]);
-                var reportPath = _reportTools.CreatePdfWithDynamicTables(resault, ["BilsemNo", "FullName", "PcName","AttendanceDateTime"],
-                                                                                   ["No","Ad Soyad","Bilgisayar","Tarih Saat"],
+                var reportPath = _reportTools.CreatePdfWithDynamicTables(resault, ["BilsemNo", "FullName", "PcName", "AttendanceDateTime"],
+                                                                                   ["No", "Ad Soyad", "Bilgisayar", "Tarih Saat"],
                                                                                    $"{AttendanceDate.ToString("dd MMM yyyy ddd")}-Yoklama Listesi");
                 wVReport.Source = new Uri(reportPath);
                 //wVReport.Reload();
@@ -329,7 +353,7 @@ namespace Saturn.Core.Desktop.Teacher
         private async void btnLessonRemove_Click(object sender, EventArgs e)
         {
             await _lessonTimeTableServices.DeleteRemote(lesson);
-            dgLessonPlans.DataSource=await _lessonTimeTableServices.GetAllRemote();
+            dgLessonPlans.DataSource = await _lessonTimeTableServices.GetAllRemote();
         }
 
         private async void btnLessonUpdate_Click(object sender, EventArgs e)
@@ -358,6 +382,24 @@ namespace Saturn.Core.Desktop.Teacher
 
 
 
+        }
+
+        private async void txtSearchStudent_TextChanged(object sender, EventArgs e)
+        {
+            students = (List<Student>)await _studentService.RemoteGetAll();
+            if (txtSearchStudent.Text!="")
+            {
+                var filteredList = students.Where(s => s.FullName.Contains(txtSearchStudent.Text, StringComparison.OrdinalIgnoreCase) ||
+                                                       s.Username.Contains(txtSearchStudent.Text, StringComparison.OrdinalIgnoreCase) ||
+                                                       (s.BilsemNo != null && s.BilsemNo.Contains(txtSearchStudent.Text, StringComparison.OrdinalIgnoreCase)) ||
+                                                       (s.Class != null && s.Class.Contains(txtSearchStudent.Text, StringComparison.OrdinalIgnoreCase))
+                                               ).ToList();
+                dgStudent.DataSource = filteredList;
+            }
+            else
+            {
+                dgStudent.DataSource = students;
+            }
         }
     }
 }
