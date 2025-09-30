@@ -7,7 +7,12 @@
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
     <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
+    <ApplicationIcon>3643745-human-man-people-person-profile_113435.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="3643745-human-man-people-person-profile_113435.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Saturn.Core.Logic\Saturn.Core.Logic.csproj" />

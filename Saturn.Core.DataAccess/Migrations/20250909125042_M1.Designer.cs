@@ -11,8 +11,8 @@ using Saturn.Core.DataAccess.Concrete;
 namespace Saturn.Core.DataAccess.Migrations
 {
     [DbContext(typeof(SaturnDbContext))]
-    [Migration("20250213083338_m8")]
-    partial class m8
+    [Migration("20250909125042_M1")]
+    partial class M1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -126,14 +126,22 @@ namespace Saturn.Core.DataAccess.Migrations
 
             modelBuilder.Entity("Saturn.Core.Entity.DatabaseEntities.Attendance", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<DateOnly>("Date")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime(6)");
 
-                    b.Property<int>("StudentId")
+                    b.Property<string>("DateString")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("LessonNames")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("StudentCount")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -201,9 +209,6 @@ namespace Saturn.Core.DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int?>("AttendanceId")
-                        .HasColumnType("int");
-
                     b.Property<string>("BilsemNo")
                         .HasColumnType("longtext");
 
@@ -217,8 +222,6 @@ namespace Saturn.Core.DataAccess.Migrations
                         .HasColumnType("longtext");
 
                     b.HasKey("StudentId");
-
-                    b.HasIndex("AttendanceId");
 
                     b.ToTable("Students");
                 });
@@ -404,17 +407,10 @@ namespace Saturn.Core.DataAccess.Migrations
                     b.Navigation("Teacher");
                 });
 
-            modelBuilder.Entity("Saturn.Core.Entity.DatabaseEntities.Student", b =>
-                {
-                    b.HasOne("Saturn.Core.Entity.DatabaseEntities.Attendance", null)
-                        .WithMany("Students")
-                        .HasForeignKey("AttendanceId");
-                });
-
             modelBuilder.Entity("Saturn.Core.Entity.DatabaseEntities.StudentsLessons", b =>
                 {
                     b.HasOne("Saturn.Core.Entity.DatabaseEntities.Lesson", "Lesson")
-                        .WithMany("Students")
+                        .WithMany()
                         .HasForeignKey("LessonId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -428,16 +424,6 @@ namespace Saturn.Core.DataAccess.Migrations
                     b.Navigation("Lesson");
 
                     b.Navigation("Student");
-                });
-
-            modelBuilder.Entity("Saturn.Core.Entity.DatabaseEntities.Attendance", b =>
-                {
-                    b.Navigation("Students");
-                });
-
-            modelBuilder.Entity("Saturn.Core.Entity.DatabaseEntities.Lesson", b =>
-                {
-                    b.Navigation("Students");
                 });
 
             modelBuilder.Entity("Saturn.Core.Entity.DatabaseEntities.Student", b =>

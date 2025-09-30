@@ -109,7 +109,8 @@ namespace Saturn.Core.Logic.Report
                                 {
                                     foreach (var prop in properties)
                                     {
-                                        columns.RelativeColumn((float)tableData.Max(item => (prop.GetValue(item)?.ToString()?.Length ?? 0)));
+                                        //columns.RelativeColumn((float)tableData.Max(item => (prop.GetValue(item)?.ToString()?.Length ?? 0)));
+                                        columns.RelativeColumn();
                                       
                                     }
                                 });

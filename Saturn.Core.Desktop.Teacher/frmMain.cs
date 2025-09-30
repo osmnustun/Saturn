@@ -62,8 +62,8 @@ namespace Saturn.Core.Desktop.Teacher
         }
         private void AttendanceInitializing()
         {
-            var st = new DateTime(2025, 2, 4);
-            var et = new DateTime(2025, 6, 19);
+            var st = new DateTime(2025, 9, 7);
+            var et = new DateTime(2026, 6, 25);
             var liste = new List<Attendance>();
             List<DayOfWeek> dayOfWeeks = new List<DayOfWeek>();
             dayOfWeeks.Add(DayOfWeek.Monday);
@@ -276,7 +276,7 @@ namespace Saturn.Core.Desktop.Teacher
                 foreach (var lesson in lessonTableList)
                 {
                     var r= attendanceList.Where(x=>x.AttendanceTime.DayOfWeek== lesson.DayOfLesson 
-                    && TimeSpan.Parse(x.AttendanceTime.ToString("HH:mm"))>TimeSpan.Parse(lesson.StartTime)
+                    && TimeSpan.Parse(x.AttendanceTime.ToString("HH:mm"))>TimeSpan.Parse(lesson.StartTime).Add(new TimeSpan(0, -30, 0))
                     && TimeSpan.Parse(x.AttendanceTime.ToString("HH:mm")) < TimeSpan.Parse(lesson.EndTime)).ToList();
                     if(r.Count > 0)
                     {

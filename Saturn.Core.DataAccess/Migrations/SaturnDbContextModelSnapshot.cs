@@ -134,6 +134,10 @@ namespace Saturn.Core.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<string>("LessonNames")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<int>("StudentCount")
                         .HasColumnType("int");
 
