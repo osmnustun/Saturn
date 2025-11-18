@@ -79,7 +79,7 @@ namespace Saturn.Core.Logic.Report
                headerText=fields;
 
             if (data == null || data.Count == 0)
-                throw new ArgumentException("Data cannot be empty or count = 0.");
+                    throw new ArgumentException("Data cannot be empty or count = 0.");
 
             var properties = data[0][0].GetType().GetProperties()
                 .Where(p => fields.Length == 0 || fields.Contains(p.Name))
