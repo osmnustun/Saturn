@@ -255,6 +255,107 @@ namespace Saturn.Core.Logic.Report
             return filePath;
         }
 
+        public string CreateLessonAttendanceReport(List<(string FullName, string DateTimeString, DateTime AttendanceDateTime)> attendanceData, string reportHeader)
+        {
+            QuestPDF.Settings.License = QuestPDF.Infrastructure.LicenseType.Community;
+
+            if (attendanceData == null || attendanceData.Count == 0)
+                throw new ArgumentException("Attendance data cannot be empty.");
+
+            // Öğrenci listesi (satırlar)
+            var students = attendanceData.Select(a => a.FullName).Distinct().OrderBy(n => n).ToList();
+            // Tarih listesi (sütunlar) - sadece tarih kısmı dikkate alınır
+            var dates = attendanceData.Select(a => a.AttendanceDateTime.Date).Distinct().OrderBy(d => d).ToList();
+
+            string fileName = $"lesson_attendance_{Guid.NewGuid()}.pdf";
+            string filePath = Path.Combine(Path.GetTempPath(), fileName);
+
+            // Eğer çok fazla tarih varsa yatay taşmayı önlemek için sütunları parçalara bölelim
+            int maxDatesPerChunk = 14; // Bir tabloda gösterilecek maksimum tarih sütunu sayısı
+
+            Document.Create(container =>
+            {
+                container.Page(page =>
+                {
+                    page.Size(PageSizes.A4.Landscape());
+                    page.Margin(20);
+                    page.DefaultTextStyle(x => x.FontSize(10));
+                    page.Header().Text(reportHeader).FontSize(16).Bold().AlignCenter();
+
+                    page.Content().Column(col =>
+                    {
+                        if (students.Count == 0 || dates.Count == 0)
+                        {
+                            col.Item().Text("Rapor için herhangi bir kayıt bulunamadı.").Italic();
+                            return;
+                        }
+
+                        for (int start = 0; start < dates.Count; start += maxDatesPerChunk)
+                        {
+                            var chunkDates = dates.Skip(start).Take(maxDatesPerChunk).ToList();
+
+                            col.Item().Table(table =>
+                            {
+                                // Sütun tanımları: ilk sütun öğrenci adı etiketi, sonraki sütunlar tarihler
+                                table.ColumnsDefinition(columns =>
+                                {
+                                    columns.ConstantColumn(120); // Öğrenci Adı sütunu genişliği
+                                    foreach (var _ in chunkDates)
+                                    {
+                                        columns.RelativeColumn(); // Tarih sütunları
+                                    }
+                                });
+
+                                // Başlık satırı
+                                table.Header(header =>
+                                {
+                                    header.Cell().Border(1).Padding(4).AlignCenter().Text("Öğrenci Adı").SemiBold();
+
+                                    foreach (var date in chunkDates)
+                                    {
+                                        header.Cell().Border(1).Padding(2)
+                                            .AlignCenter()
+                                            .RotateLeft() // Tarih başlıklarını döndür
+                                            .Text(date.ToString("dd.MM.yyyy dddd"))
+                                            .FontSize(9)
+                                            .SemiBold();
+                                    }
+                                });
+
+                                // Veri satırları: Her satır bir öğrenci için
+                                foreach (var student in students)
+                                {
+                                    // Öğrenci adı hücresi
+                                    table.Cell().BorderBottom(1).Padding(4).Text(student).FontSize(10);
+
+                                    // Bu öğrenci için parça tarihlerdeki yoklama bilgisi
+                                    foreach (var date in chunkDates)
+                                    {
+                                        bool present = attendanceData.Any(a => a.FullName == student && a.AttendanceDateTime.Date == date);
+
+                                        table.Cell().Border(1).Padding(2)
+                                            .AlignCenter()
+                                            .Text(present ? "✔" : "X")
+                                            .FontColor(present ? Colors.Green.Medium : Colors.Red.Medium)
+                                            .SemiBold();
+                                    }
+                                }
+                            });
+
+                            col.Item().PaddingBottom(10);
+                        }
+                    });
+
+                    page.Footer().AlignRight().Text(x =>
+                    {
+                        x.Span("Oluşturulma: ").SemiBold();
+                        x.Span(DateTime.Now.ToString("dd.MM.yyyy HH:mm"));
+                    });
+                });
+            }).GeneratePdf(filePath);
+
+            return filePath;
+        }
 
 
 

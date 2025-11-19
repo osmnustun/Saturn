@@ -66,8 +66,8 @@ namespace Saturn.Core.Desktop.Teacher
         }
         private void AttendanceInitializing()
         {
-             st = new DateTime(2025, 9, 9);
-             et = new DateTime(2026, 2, 19);
+            st = new DateTime(2025, 9, 9);
+            et = new DateTime(2026, 2, 19);
             var liste = new List<Attendance>();
             List<DayOfWeek> dayOfWeeks = new List<DayOfWeek>();
             dayOfWeeks.Add(DayOfWeek.Monday);
@@ -200,7 +200,6 @@ namespace Saturn.Core.Desktop.Teacher
 
             return resault;
         }
-
         private void Get_Student_Txt()
         {
             student.Class = txtClass.Text;
@@ -223,7 +222,6 @@ namespace Saturn.Core.Desktop.Teacher
 
         }
 
-
         private void dgStudent_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             GetStudentFromDatagrid();
@@ -237,14 +235,14 @@ namespace Saturn.Core.Desktop.Teacher
             var studentAttendance = attendanceRaws.Where(x => x.Username == student.Username).ToList();
             foreach (var lesson in student.Groups)
             {
-                foreach(var item in TimeTools.GetDatesBetween(st, et, (DayOfWeek)lesson.Lesson.DayOfLesson))
+                foreach (var item in TimeTools.GetDatesBetween(st, et, (DayOfWeek)lesson.Lesson.DayOfLesson))
                 {
-                   var yoklama = studentAttendance.Any(x => x.AttendanceTime.ToShortDateString() == item.ToShortDateString());
+                    var yoklama = studentAttendance.Any(x => x.AttendanceTime.ToShortDateString() == item.ToShortDateString());
                     attendanceList.Add((lesson.Lesson.LessonName, item, yoklama));
                 }
             }
 
-           var reportPath= _reportTools.CreateStudentAttendanceReport(attendanceList, $"{student.FullName}-Yoklama Raporu");
+            var reportPath = _reportTools.CreateStudentAttendanceReport(attendanceList, $"{student.FullName}-Yoklama Raporu");
             webViewStudentReport.Source = new Uri(reportPath);
         }
 
@@ -365,6 +363,38 @@ namespace Saturn.Core.Desktop.Teacher
         }
         void dgvLessonPlans_CellClick(object sender, DataGridViewCellEventArgs e)
         {
+            GetLessonFromDataGrid(e);
+            GetLessonAttendanceReport();
+        }
+
+        private async Task GetLessonAttendanceReport()
+        {
+            
+            CultureInfo ci = new CultureInfo("tr-TR");
+            students = (List<Student>)await _studentService.RemoteGetAll();
+            var LessonData = new List<(string FullName, string DateTimeString, DateTime AttendanceDateTime)>();
+            var lessonAttendance = attendanceRaws.Where(x => x.AttendanceTime.DayOfWeek == lesson.DayOfLesson
+                                                    && students.Any(s=>s.Username == x.Username)
+                                                    && TimeSpan.Parse(x.AttendanceTime.ToString("HH:mm")) > TimeSpan.Parse(lesson.StartTime)
+                                                    && TimeSpan.Parse(x.AttendanceTime.ToString("HH:mm")) < TimeSpan.Parse(lesson.EndTime))
+                                                    .ToList();
+
+
+            foreach (var attendanceRaw in lessonAttendance)
+            {
+                LessonData.Add((
+                    attendanceRaw.FullName,
+                    attendanceRaw.AttendanceTime.ToString("dd MMM yyyy ddd HH:mm", ci),
+                    attendanceRaw.AttendanceTime
+                ));
+            }
+
+            var reportPath = _reportTools.CreateLessonAttendanceReport(LessonData, lesson.LessonName + "-Yoklama Raporu");
+            wVDersRapor.Source = new Uri(reportPath);
+        }
+
+        private void GetLessonFromDataGrid(DataGridViewCellEventArgs e)
+        {
             lesson.Clear();
             var selectedLesson = dgLessonPlans.Rows[e.RowIndex].DataBoundItem as Lesson;
             LessonId = selectedLesson.LessonId;
@@ -379,15 +409,12 @@ namespace Saturn.Core.Desktop.Teacher
             txtStartTime.Text = lesson.StartTime;
             txtEndTime.Text = lesson.EndTime;
             cmbDay.SelectedValue = lesson.DayOfLesson;
-
-
-
         }
 
         private async void txtSearchStudent_TextChanged(object sender, EventArgs e)
         {
             students = (List<Student>)await _studentService.RemoteGetAll();
-            if (txtSearchStudent.Text!="")
+            if (txtSearchStudent.Text != "")
             {
                 var filteredList = students.Where(s => s.FullName.Contains(txtSearchStudent.Text, StringComparison.OrdinalIgnoreCase) ||
                                                        s.Username.Contains(txtSearchStudent.Text, StringComparison.OrdinalIgnoreCase) ||
@@ -401,5 +428,7 @@ namespace Saturn.Core.Desktop.Teacher
                 dgStudent.DataSource = students;
             }
         }
+
+       
     }
 }
