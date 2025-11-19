@@ -372,6 +372,7 @@ namespace Saturn.Core.Desktop.Teacher
             
             CultureInfo ci = new CultureInfo("tr-TR");
             students = (List<Student>)await _studentService.RemoteGetAll();
+            var LessonDates=TimeTools.GetDatesBetween(st, et, (DayOfWeek)lesson.DayOfLesson);
             var LessonData = new List<(string FullName, string DateTimeString, DateTime AttendanceDateTime)>();
             var lessonAttendance = attendanceRaws.Where(x => x.AttendanceTime.DayOfWeek == lesson.DayOfLesson
                                                     && students.Any(s=>s.Username == x.Username)
@@ -389,7 +390,7 @@ namespace Saturn.Core.Desktop.Teacher
                 ));
             }
 
-            var reportPath = _reportTools.CreateLessonAttendanceReport(LessonData, lesson.LessonName + "-Yoklama Raporu");
+            var reportPath = _reportTools.CreateLessonAttendanceReport(LessonData,LessonDates, lesson.LessonName + "-Yoklama Raporu");
             wVDersRapor.Source = new Uri(reportPath);
         }
 

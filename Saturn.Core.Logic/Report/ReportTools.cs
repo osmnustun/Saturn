@@ -255,7 +255,7 @@ namespace Saturn.Core.Logic.Report
             return filePath;
         }
 
-        public string CreateLessonAttendanceReport(List<(string FullName, string DateTimeString, DateTime AttendanceDateTime)> attendanceData, string reportHeader)
+        public string CreateLessonAttendanceReport(List<(string FullName, string DateTimeString, DateTime AttendanceDateTime)> attendanceData,List<DateTime> LessonDates, string reportHeader)
         {
             QuestPDF.Settings.License = QuestPDF.Infrastructure.LicenseType.Community;
 
@@ -265,20 +265,20 @@ namespace Saturn.Core.Logic.Report
             // Öğrenci listesi (satırlar)
             var students = attendanceData.Select(a => a.FullName).Distinct().OrderBy(n => n).ToList();
             // Tarih listesi (sütunlar) - sadece tarih kısmı dikkate alınır
-            var dates = attendanceData.Select(a => a.AttendanceDateTime.Date).Distinct().OrderBy(d => d).ToList();
+            var dates = LessonDates;
 
             string fileName = $"lesson_attendance_{Guid.NewGuid()}.pdf";
             string filePath = Path.Combine(Path.GetTempPath(), fileName);
 
             // Eğer çok fazla tarih varsa yatay taşmayı önlemek için sütunları parçalara bölelim
-            int maxDatesPerChunk = 14; // Bir tabloda gösterilecek maksimum tarih sütunu sayısı
+            int maxDatesPerChunk = 30; // Bir tabloda gösterilecek maksimum tarih sütunu sayısı
 
             Document.Create(container =>
             {
                 container.Page(page =>
                 {
                     page.Size(PageSizes.A4.Landscape());
-                    page.Margin(20);
+                    page.Margin(15);
                     page.DefaultTextStyle(x => x.FontSize(10));
                     page.Header().Text(reportHeader).FontSize(16).Bold().AlignCenter();
 
@@ -296,20 +296,21 @@ namespace Saturn.Core.Logic.Report
 
                             col.Item().Table(table =>
                             {
-                                // Sütun tanımları: ilk sütun öğrenci adı etiketi, sonraki sütunlar tarihler
-                                table.ColumnsDefinition(columns =>
-                                {
-                                    columns.ConstantColumn(120); // Öğrenci Adı sütunu genişliği
-                                    foreach (var _ in chunkDates)
+                                    // Sütun tanımları: ilk sütun öğrenci adı etiketi, sonraki sütunlar tarihler
+                                    table.ColumnsDefinition(columns =>
                                     {
-                                        columns.RelativeColumn(); // Tarih sütunları
-                                    }
-                                });
+                                        columns.ConstantColumn(130); // Öğrenci Adı sütunu genişliği (110'dan 85'e daraltıldı)
+                                        foreach (var _ in chunkDates)
+                                        {
+                                          columns.RelativeColumn(); // Tarih sütunları
+                                           // columns.ConstantColumn(20); // Tarih sütunları genişliği
+                                        }
+                                    });
 
                                 // Başlık satırı
                                 table.Header(header =>
                                 {
-                                    header.Cell().Border(1).Padding(4).AlignCenter().Text("Öğrenci Adı").SemiBold();
+                                    header.Cell().Border(1).Padding(2).AlignCenter().Text("Öğrenci Adı").SemiBold().FontSize(9);
 
                                     foreach (var date in chunkDates)
                                     {
@@ -317,7 +318,7 @@ namespace Saturn.Core.Logic.Report
                                             .AlignCenter()
                                             .RotateLeft() // Tarih başlıklarını döndür
                                             .Text(date.ToString("dd.MM.yyyy dddd"))
-                                            .FontSize(9)
+                                            .FontSize(8)
                                             .SemiBold();
                                     }
                                 });
@@ -326,7 +327,7 @@ namespace Saturn.Core.Logic.Report
                                 foreach (var student in students)
                                 {
                                     // Öğrenci adı hücresi
-                                    table.Cell().BorderBottom(1).Padding(4).Text(student).FontSize(10);
+                                    table.Cell().BorderBottom(1).Padding(2).Text(student).FontSize(9);
 
                                     // Bu öğrenci için parça tarihlerdeki yoklama bilgisi
                                     foreach (var date in chunkDates)
@@ -342,7 +343,7 @@ namespace Saturn.Core.Logic.Report
                                 }
                             });
 
-                            col.Item().PaddingBottom(10);
+                            col.Item().PaddingBottom(8);
                         }
                     });
 
